@@ -1,7 +1,8 @@
 package pso;
 
-public class Configurator {
+public class Setup {
 
+	public static final int PARTICLES = 200; // number of particles in swarm
 	public static final int ITERATIONS = 15; // iterations number of particle swarm algorithm
 	public static final int DIMENSIONS = 15; // dimensions number of search space
 	public static final int XMIN = 0; // lower moving constraint of dimensions
