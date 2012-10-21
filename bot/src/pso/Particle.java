@@ -1,36 +1,159 @@
 package pso;
 
+/**
+ * Particle represents one solution in search space.
+ * 
+ * @author Marek Hlav·Ë <mark.hlavac@gmail.com>
+ * 
+ */
 public class Particle {
 	
-	private int[] _locationVector;
-	private int[] _velocityVector;
 	private int _dimensions;
+	
+	private int[] _velocityVector;
+	private int[] _locationVector;
+	private int _distance;
+	
+	private int[] _bestLocationVector;
+	private int _bestDistance = 1000000;
+	
+	private double _localBestFitness = 0;
+	private double _fitness;
 
+	/**
+	 * Constructor creates location, velocity and best location vectors with specified dimension size.
+	 * 
+	 * @param dimensions	number of dimensions
+	 */
 	public Particle(int dimensions){
 		_locationVector = new int[dimensions];
+		_velocityVector = new int[dimensions];
+		_bestLocationVector = new int[dimensions];
+		
 		_dimensions = dimensions;
 	}
 	
+	/**
+	 * Set location value to location vector at specified dimension.
+	 * 
+	 * @param dim		dimension number
+	 * @param value		location value
+	 */
 	public void setLocationValueAt(int dim, int value){
 		_locationVector[dim] = value;
 	}
 	
+	/**
+	 * Get location value at specified dimension.
+	 * 
+	 * @param dim		dimension number
+	 * @return location value at specified dimension
+	 */
 	public int getLocationValueAt(int dim){
 		return _locationVector[dim];
 	}
 	
+	/**
+	 * Get full location vector.
+	 * 
+	 * @return location vector
+	 */
+	public int[] getLocation() {
+		return _locationVector;
+	}
+	
+	/**
+	 * Set velocity value to velocity vector at specified dimension.
+	 * 
+	 * @param dim		dimension number
+	 * @param value		velocity value
+	 */
 	public void setVelocityValueAt(int dim, int value){
 		_velocityVector[dim] = value;
 	}
 	
+	/**
+	 * Get velocity value at specified dimension.
+	 * 
+	 * @param dim		dimension number
+	 * @return velocity value at specified dimension
+	 */
 	public int getVelocityValueAt(int dim){
 		return _velocityVector[dim];
 	}
 	
-	public void updateLocationVector(){
-		for (int i = 0; i < _dimensions; i++){
-			_locationVector[i] = _locationVector[i] + _velocityVector[i];
+	/**
+	 * Get best location value at specified dimension.
+	 * 
+	 * @param dim		dimension number
+	 * @return best location value at specified dimension
+	 */
+	public int getBestLocationValueAt(int dim) {
+		return _bestLocationVector[dim];
+	}
+	
+	/**
+	 * Get full best location vector.
+	 * 
+	 * @return best location vector
+	 */
+	public int[] getBestLocation() {
+		return _bestLocationVector;
+	}
+
+	/**
+	 * Get fitness of actual search space location.
+	 * 
+	 * @return fitness of actual search space location
+	 */
+	public double getFitness() {
+		return _fitness;
+	}
+
+	/**
+	 * Update current fitness, local best fitness and best distance value if the condition is met.
+	 * @param _fitness 	new fitness
+	 */
+	public void setFitness(double _fitness) {
+		this._fitness = _fitness;
+		if (_localBestFitness < _fitness){
+			_localBestFitness = _fitness;
+			
+			// save location of best fitness
+			for (int i = 0; i < _dimensions; i++){
+				_bestLocationVector[i] = _locationVector[i];
+			}
+			
+			// save best distance
+			_bestDistance = _distance;
 		}
+	}
+	
+	/**
+	 * Set current distance to target particle.
+	 * 
+	 * @param _distance current distance to target particle
+	 */
+	public void setDistance(int _distance){
+		this._distance = _distance;
+	}
+	
+	/**
+	 * Get value of best distance from execution start.
+	 * 	
+	 * @return value of best distance from execution start
+	 */
+	public int getBestDistance(){
+		return _bestDistance;
+	}
+
+	/**
+	 * Get value of best fitness from execution start.
+	 * 	
+	 * @return value of best fitness from execution start
+	 */
+	public double getLocalBestFitness() {
+		return _localBestFitness;
 	}
 	
 }

@@ -1,4 +1,4 @@
-import pso.Generator;
+import pso.PSO;
 
 public class Main {
 
@@ -6,7 +6,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new Generator();			
+		new PSO();			
 	}
 
 }
