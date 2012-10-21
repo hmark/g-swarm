@@ -112,6 +112,7 @@ public class Particle {
 
 	/**
 	 * Update current fitness, local best fitness and best distance value if the condition is met.
+	 * 
 	 * @param _fitness 	new fitness
 	 */
 	public void setFitness(double _fitness) {

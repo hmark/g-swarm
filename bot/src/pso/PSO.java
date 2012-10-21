@@ -16,10 +16,9 @@ public class PSO {
 	protected Particle _target;
 
 	/**
-	 * Constructor starts algorithm execution.
+	 * Empty constructor.
 	 */
 	public PSO(){
-		start();
 	}
 	
 	/**
@@ -53,8 +52,8 @@ public class PSO {
 			updateLocations();
 			
 			PSOLogger.logIteration(iter, _swarm);
-			PSOLogger.logBestLocation(_swarm);
-			PSOLogger.logParticleLocation(_target);
+			//PSOLogger.logBestLocation(_swarm);
+			//PSOLogger.logParticleLocation(_target);
 		}
 		
 		calculateFitness();
@@ -76,7 +75,7 @@ public class PSO {
 			randValue = generator.nextInt(Setup.XMAX) + Setup.XMIN;
 			_target.setLocationValueAt(j, randValue);
 			
-			randValue = generator.nextInt(Setup.SPEED_MAX);
+			randValue = generator.nextInt(2 * Setup.SPEED_MAX) - Setup.SPEED_MAX;
 			_target.setVelocityValueAt(j, randValue);
 		}
 	}
@@ -100,7 +99,7 @@ public class PSO {
 				randValue = generator.nextInt(Setup.XMAX) + Setup.XMIN;
 				particle.setLocationValueAt(j, randValue);
 				
-				randValue = generator.nextInt(Setup.SPEED_MAX);
+				randValue = generator.nextInt(2 * Setup.SPEED_MAX) - Setup.SPEED_MAX;
 				particle.setVelocityValueAt(j, randValue);
 			}
 			
