@@ -1,4 +1,4 @@
-import evo.GSwarm;
+import generator.RobotGenerator;
 
 public class Main {
 
@@ -6,7 +6,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new GSwarm();			
+		new RobotGenerator("conf/bot.tmpl");			
 	}
 
 }
