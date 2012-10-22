@@ -14,6 +14,14 @@ public class Rule {
 	public void addExpression(String rule){
 		_expressions.add(rule);
 	}
+	
+	public String getExpressionAt(int index){
+		return _expressions.get(index);
+	}
+	
+	public int getExpressionsNumber(){
+		return _expressions.size();
+	}
 
 	public String getNonTerminal() {
 		return _nonTerminal;
