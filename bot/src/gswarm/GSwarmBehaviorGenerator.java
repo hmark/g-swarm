@@ -26,7 +26,7 @@ public class GSwarmBehaviorGenerator extends BehaviorGenerator {
 			expressionsNum = rule.getExpressionsNumber();
 			derivationValue = particle.getLocationValueAt(vectorIndex);
 			ruleIndex = derivationValue % expressionsNum;
-			System.out.println(derivationValue + " % " + expressionsNum + " = " + ruleIndex);
+			//System.out.println(derivationValue + " % " + expressionsNum + " = " + ruleIndex);
 			expression = rule.getExpressionAt(ruleIndex);
 			
 			//System.out.println("replace " + nonTerminal + " with " + expression);

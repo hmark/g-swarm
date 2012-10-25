@@ -1,0 +1,21 @@
+##########
+INFORMATION
+##########
+Project name:	G-Swarm
+Description:	Framework for generating Robocode robots based on Particle Swarm Optimization and Grammatical Swarm
+Author:		Marek Hlaváč
+
+##########
+CHANGELOG
+##########
+v0.2 (TODO)
+- robocode platform synchronization
+- battle configs support
+- simple fitness calculator (based on battles output)
+- test against simple set of robots
+
+v0.1
+- simple project architecture
+- PSO implementation
+- robots grammar support
+- simple grammatical swarm implementation (without extern fitness calculation)
