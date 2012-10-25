@@ -1,0 +1,9 @@
+#Battle Properties
+#Thu Oct 25 17:48:57 CEST 2012
+robocode.battle.numRounds=10
+robocode.battle.gunCoolingRate=0.1
+robocode.battleField.width=600
+robocode.battle.selectedRobots=sample.MyFirstRobot,GSwarmRobot*
+robocode.battle.rules.inactivityTime=450
+robocode.battle.hideEnemyNames=true
+robocode.battleField.height=600
