@@ -1,4 +1,4 @@
-import generator.RobotGenerator;
+import gswarm.*;
 
 public class Main {
 
@@ -6,7 +6,8 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new RobotGenerator("conf/bot.tmpl");			
+		GSwarm gswarm = new GSwarm();
+		gswarm.start();
 	}
 
 }

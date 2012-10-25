@@ -11,8 +11,8 @@ public class BehaviorGenerator {
 	private String _key;
 	private String _filename;
 	
-	private Grammar _grammar = new Grammar();
-	private String _body = "<EXP>";
+	protected Grammar _grammar = new Grammar();
+	protected String _body;
 
 	public BehaviorGenerator(String key, String filename){
 		_key = key;
@@ -31,7 +31,7 @@ public class BehaviorGenerator {
 			String strLine, nonTerminal;
 			String []expressions;
 			int rulesNum;
-			Pattern nontermPattern = Pattern.compile("^<...> =");
+			Pattern nontermPattern = Pattern.compile("^<!...> =");
 			Matcher matcher;
 			
 			while ((strLine = br.readLine()) != null)   {
@@ -39,11 +39,11 @@ public class BehaviorGenerator {
 				matcher = nontermPattern.matcher(strLine);
 				matcher.find();
 				
-				nonTerminal = matcher.group(0).substring(0, 5);
+				nonTerminal = matcher.group(0).substring(0, 6);
 				rule.setNonTerminal(nonTerminal);
 				//System.out.println("NON: " + nonTerminal);
 				
-				expressions = strLine.substring(8).split("= | \\| ");
+				expressions = strLine.substring(9).split("= | \\| ");
 				rulesNum = expressions.length;
 				for (int i = 0; i < rulesNum; i++){
 					rule.addExpression(expressions[i]);
@@ -59,6 +59,8 @@ public class BehaviorGenerator {
 	}
 	
 	public void generateBody(){
+		resetBody();
+		
 		String nonTerminal, expression;
 		int randIndex, expNum, rulesNum = _grammar.getRulesNum();
 		Rule rule;
@@ -78,6 +80,10 @@ public class BehaviorGenerator {
 				//System.out.println(_body);
 			}
 		}
+	}
+	
+	protected void resetBody(){
+		_body = "<!EXP>";
 	}
 	
 	public String getKey(){

@@ -1,8 +1,6 @@
 package utils;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class FileUtils {
 
@@ -24,5 +22,19 @@ public class FileUtils {
 		}
 		
 		return null;
+	}
+	
+	static public void saveStringToFile(String filepath, String data){
+		try {
+			File file = new File(filepath);
+			file.getParentFile().mkdirs();
+			
+			BufferedWriter out = new BufferedWriter(new FileWriter(filepath));
+			out.write(data);
+			out.close();
+		} 
+		catch (IOException e) { 
+			System.err.println("Error: " + e.getMessage());
+		}
 	}
 }

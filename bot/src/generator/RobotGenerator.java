@@ -7,20 +7,23 @@ import utils.FileUtils;
 
 public class RobotGenerator {
 	
-	private String _filename;
-	private BufferedReader _br;
+	protected String _filename;
+	protected BufferedReader _br;
 	private ArrayList<BehaviorGenerator> _programs = new ArrayList<BehaviorGenerator>();
 	
 	public RobotGenerator(String filename){
 		_filename = filename;
-		
-		openTemplateFile();
-		findProgramSpaces();
-		generateProgram();
-		outputFullRobotProgram();
 	}
 	
-	private void openTemplateFile(){
+	public void start(){
+		openTemplateFile();
+		findProgramSpaces();
+		
+		generateBehavior();
+		outputRobotProgram();
+	}
+	
+	protected void openTemplateFile(){
 		try{
 			FileInputStream fstream = new FileInputStream(_filename);
 			DataInputStream in = new DataInputStream(fstream);
@@ -31,7 +34,7 @@ public class RobotGenerator {
 		}
 	}
 	
-	private void findProgramSpaces(){
+	protected void findProgramSpaces(){
 		String strLine;
 		
 		Pattern pattern = Pattern.compile("#.*\\.grm");
@@ -58,7 +61,7 @@ public class RobotGenerator {
 		}
 	}
 	
-	private void generateProgram(){
+	protected void generateBehavior(){
 		int programsNum = _programs.size();
 		BehaviorGenerator program;
 		
@@ -69,7 +72,7 @@ public class RobotGenerator {
 		}
 	}
 	
-	private void outputFullRobotProgram(){
+	protected void outputRobotProgram(){
 		String body = FileUtils.convertFileToString(_filename);
 		int programsNum = _programs.size();
 		BehaviorGenerator program;
