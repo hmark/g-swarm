@@ -13,12 +13,12 @@ public class Setup {
 	/**
 	 * Number of particles in swarm.
 	 */
-	public static final int PARTICLES = 10000;
+	public static final int PARTICLES = 30;
 	
 	/**
 	 * Dimensions number of search space.
 	 */
-	public static final int DIMENSIONS = 50;
+	public static final int DIMENSIONS = 100;
 	
 	// PSO initial location and velocity coefficients
 	
@@ -30,10 +30,15 @@ public class Setup {
 	/**
 	 * Upper constraint of dimension value.
 	 */
-	public static final int XMAX = 255; 
+	public static final int XMAX = 255;
 	
 	/**
-	 * Maximum speed of particle for dimension (e.g. 255 means velocity is from interval <-255, 255>).
+	 * Minimum speed of particle for dimension.
+	 */
+	public static final int SPEED_MIN = 0;
+	
+	/**
+	 * Maximum speed of particle for dimension.
 	 */
 	public static final int SPEED_MAX = 255;
 	
