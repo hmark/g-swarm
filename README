@@ -10,12 +10,12 @@ CHANGELOG
 ##########
 v0.2 (TODO - 31.10.2012)
 - robocode platform synchronization
-- battle configs support
-- simple fitness calculator (based on battles output)
+- battle configuration
+- simple fitness calculator (based on battle results)
 - test against simple set of robots
 
 v0.1 (24.10.2012)
 - simple project architecture
 - PSO implementation
 - robots grammar support
-- simple grammatical swarm implementation (without extern fitness calculation)
+- simple grammatical swarm implementation (without external fitness calculation)
