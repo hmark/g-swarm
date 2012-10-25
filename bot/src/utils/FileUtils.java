@@ -5,8 +5,7 @@ import java.io.*;
 public class FileUtils {
 
 	static public String convertFileToString(String filename){
-		try
-		{
+		try {
 		    BufferedReader br = new BufferedReader(new FileReader(filename));
 		    StringBuffer str = new StringBuffer();
 		    String line = br.readLine();
