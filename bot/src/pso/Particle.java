@@ -19,6 +19,8 @@ public class Particle {
 	
 	private double _localBestFitness = 0;
 	private double _fitness;
+	
+	private String _name;
 
 	/**
 	 * Constructor creates location, velocity and best location vectors with specified dimension size.
@@ -69,6 +71,7 @@ public class Particle {
 	 * @param value		velocity value
 	 */
 	public void setVelocityValueAt(int dim, int value){
+		value = Math.max(Math.min(value, Setup.XMAX), Setup.XMIN);
 		_velocityVector[dim] = value;
 	}
 	
@@ -155,6 +158,14 @@ public class Particle {
 	 */
 	public double getLocalBestFitness() {
 		return _localBestFitness;
+	}
+	
+	public void setName(String name) {
+		_name = name;
+	}
+	
+	public String getName() {
+		return _name;
 	}
 	
 }
