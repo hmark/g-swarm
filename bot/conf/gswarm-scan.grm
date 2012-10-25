@@ -1,3 +1,8 @@
-<!EXP> = fire(1); | fire(2); | fire(3); | if(<!NUM> > <!NUM>){<!EXP>}else{<!EXP>} | if(<!NUM> > 0){<!EXP>}else{<!EXP>} | turnGunLeft(<!ANG>); | turnGunRight(<!ANG>); | turnLeft(<!ANG>); | turnRight(<!ANG>); | turnRadarLeft(<!ANG>); | turnRadarRight(<!ANG>); | doNothing();
-<!NUM> = getEnergy() | getHeading() | getGunHeading() | getRadarHeading() | getX() | getY() | getWidth() | getHeight() | EnemyDistance() | EnemyHeading() | EnemyEnergy() | random() | 0 | e.getDistance() | e.getEnergy() | e.getHeading() | e.getBearing() | e.getVelocity()
-<!ANG> = -180 | -135 | -90 | -45 | 45 | 90 | 135 | 180
+<!ACT> = fire(<!FIR>); | if(<!ANG> > <!ANX>){<!ACT>}else{<!ACT>} | if(<!ERG> > <!ERX>){<!ACT>}else{<!ACT>} | if(<!SCR> > <!SCX>){<!ACT>}else{<!ACT>} | turnGunLeft(<!ANG>); | turnLeft(<!ANG>); | ahead(<!SCX>); | back(<!SCX>); | doNothing();
+<!ERG> = getEnergy() | e.getEnergy()
+<!ERX> = getEnergy() | e.getEnergy() | 25 | 50 | 75 | 100
+<!ANG> = getHeading() | getGunHeading() | getRadarHeading() | e.getHeading() | e.getBearing()
+<!ANX> = getHeading() | getGunHeading() | getRadarHeading() | e.getHeading() | e.getBearing() | 90 | 180 | 270 | 360
+<!SCR> = getX() | getY() | e.getDistance()
+<!SCX> = getX() | getY() | e.getDistance() | 0 | 50 | 100 | 150 | 200 | 250 | 300 | 350 | 400 | 450 | 500 | 550 | 600
+<!FIR> = 1 | 2 | 3

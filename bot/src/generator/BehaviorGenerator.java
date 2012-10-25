@@ -83,7 +83,7 @@ public class BehaviorGenerator {
 	}
 	
 	protected void resetBody(){
-		_body = "<!EXP>";
+		_body = "<!ACT>";
 	}
 	
 	public String getKey(){

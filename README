@@ -9,13 +9,13 @@ Author:		Marek Hlaváč
 CHANGELOG
 ##########
 v0.2 (TODO - 31.10.2012)
-- robocode platform synchronization
-- battle configuration
-- simple fitness calculator (based on battle results)
-- test against simple set of robots
+OK - robocode platform synchronization
+OK - simple battle configuration
+OK - simple fitness calculator (based on battle results against one not very intelligent robot)
+test against simple set of robots
 
 v0.1 (24.10.2012)
-- simple project architecture
-- PSO implementation
-- robots grammar support
-- simple grammatical swarm implementation (without external fitness calculation)
+OK - simple project architecture
+OK - PSO implementation
+OK - robots grammar support
+OK - simple grammatical swarm implementation (without external fitness calculation)
