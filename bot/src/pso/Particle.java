@@ -22,6 +22,8 @@ public class Particle {
 	
 	private String _name;
 	private String _src;
+	
+	private String _bestSrc;
 
 	/**
 	 * Constructor creates location, velocity and best location vectors with specified dimension size.
@@ -124,6 +126,7 @@ public class Particle {
 		this._fitness = _fitness;
 		if (_localBestFitness < _fitness){
 			_localBestFitness = _fitness;
+			_bestSrc = _src;
 			
 			// save location of best fitness
 			for (int i = 0; i < _dimensions; i++){
@@ -176,6 +179,10 @@ public class Particle {
 	
 	public String getSrc() {
 		return _src;
+	}
+	
+	public String getBestSrc() {
+		return _bestSrc;
 	}
 	
 }
