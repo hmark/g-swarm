@@ -5,8 +5,11 @@ import pso.PSO;
 import pso.Particle;
 import pso.Setup;
 import utils.DateUtils;
+import external.RobotTester;
 
 public class GSwarm extends PSO {
+	
+	private String _filePrefix = "test/test" + DateUtils.getCurrentDateTime("yyyy-MM-dd-HH-mm-ss") + "/";
 
 	public GSwarm(){
 	}
@@ -15,28 +18,30 @@ public class GSwarm extends PSO {
 		generateInitialSwarm();
 		
 		GSwarmRobotGenerator robotGen = new GSwarmRobotGenerator("conf/bot.tmpl");
-		int iters = Setup.ITERATIONS;
-		int particles = Setup.PARTICLES;
 		Particle particle;
-		String name, filepath;
-		String filePrefix = "test/test" + DateUtils.getCurrentDateTime("yyyy-MM-dd-HH-mm-ss") + "/";
 		
-		for (int i = 0; i < iters; i++){
-			for (int j = 0; j < particles; j++){
+		for (int i = 0; i < Setup.ITERATIONS; i++){
+			for (int j = 0; j < Setup.PARTICLES; j++){
 				particle = _swarm.getParticleAt(j);
+				setParticleId(particle, i, j);
 				
-				name = "iter" + (1000 + i) + "/particle." + (1000 + j);
-				particle.setName(name);
-
-				filepath = filePrefix + name;
-				robotGen.generateRobot(particle, filepath);
-				
-				robotGen.testRobot(particle);
-				robotGen.calculateFitness(particle);
+				robotGen.generateRobot(particle);
+				RobotTester.testRobot(particle);
 			}
+			
+			PSOLogger.logGSwarmIteration(_filePrefix, i, _swarm);
 			
 			executeIteration(i);
 		}
+	}
+	
+	private void setParticleId(Particle particle, int iter, int pos){
+		String name, filepath;
+		
+		name = "particle" + (10000 + pos);
+		filepath = _filePrefix + "iter" + (10000 + iter) + "/" + name;
+		particle.setName(name);
+		particle.setSrc(filepath);
 	}
 	
 	public void executeIteration(int iter){
@@ -51,7 +56,7 @@ public class GSwarm extends PSO {
 		updateVelocities(iter);
 		updateLocations();
 			
-		//PSOLogger.logIteration(iter, _swarm);
+		//PSOLogger.logGSwarmIteration(iter, _swarm);
 		//PSOLogger.logBestLocation(_swarm);
 		//PSOLogger.logParticleLocation(_target);		
 	}

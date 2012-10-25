@@ -7,8 +7,8 @@ import java.util.regex.Pattern;
 
 import pso.*;
 import utils.FileUtils;
-import generator.BehaviorGenerator;
 import generator.RobotGenerator;
+import external.*;
 
 public class GSwarmRobotGenerator extends RobotGenerator {
 	
@@ -49,7 +49,7 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 		}
 	}
 	
-	protected void generateRobot(Particle particle, String filepath){
+	protected void generateRobot(Particle particle){
 		int programsNum = _gSwarmPrograms.size();
 		int lastIndex = 0;
 		GSwarmBehaviorGenerator program;
@@ -64,16 +64,11 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 			body = body.replace(program.getKey(), program.getBody());
 		}
 		
-		FileUtils.saveStringToFile(filepath, body);
-	}
-	
-	protected void testRobot(Particle particle){
-		// TODO - test robot in robocode
-	}
-	
-	protected void calculateFitness(Particle particle){
-		// TODO - fitness calculation
-	}
-	
+		String path = particle.getSrc();
+		
+		FileUtils.saveStringToFile("test/GSwarmRobot.java", body);
+		FileUtils.saveStringToFile(path + ".java", body);
+		//JavaRobotCompiler.compileRobot(path);
+	}	
 
 }
