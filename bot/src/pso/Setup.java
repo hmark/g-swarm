@@ -13,7 +13,7 @@ public class Setup {
 	/**
 	 * Number of particles in swarm.
 	 */
-	public static final int PARTICLES = 30;
+	public static final int PARTICLES = 50;
 	
 	/**
 	 * Dimensions number of search space.
