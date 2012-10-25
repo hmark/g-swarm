@@ -11,7 +11,7 @@ CHANGELOG
 v0.2 (TODO - 31.10.2012)
 OK - robocode platform synchronization
 OK - simple battle configuration
-OK - simple fitness calculator (based on battle results against one not very intelligent robot)
+OK - simple fitness calculator (based on battle results against one weak robot)
 grammar without terminal actions (all relevant action should be static in bot template)
 simple paralelization of computation
 test against simple set of robots
