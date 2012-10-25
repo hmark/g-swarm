@@ -2,12 +2,18 @@ import robocode.Robot;
 import robocode.ScannedRobotEvent;
 import robocode.BulletHitEvent;
 import robocode.HitByBulletEvent;
+import java.util.Random;
 
-public class GSwarm extends Robot {
+public class GSwarmRobot extends Robot {
+
+	private Random generator;
 
 	public void run() {
+		generator = new Random();
+		
+
 		while (true) {
-			#gswarm-run.grm
+			turnRadarLeft(360);
 		}
 	}
 
@@ -15,12 +21,8 @@ public class GSwarm extends Robot {
 		#gswarm-scan.grm
 	}
 
-	public void onBulletHit(BulletHitEvent e) {
-		#gswarm-bullethit.grm
-	}
-
-	public void onHitByBullet(HitByBulletEvent e) {
-		#gswarm-hitbybullet.grm
+	private int random(){
+		return generator.nextInt(800);
 	}
 
 }
