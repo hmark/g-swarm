@@ -21,6 +21,11 @@ public class PSO {
 	public PSO(){
 	}
 	
+	public Swarm getSwarm() {
+		return _swarm;
+	}
+
+	
 	/**
 	 * Body of algorithm execution.
 	 * Algorithm sequence:
@@ -75,7 +80,7 @@ public class PSO {
 			randValue = generator.nextInt(Setup.XMAX) + Setup.XMIN;
 			_target.setLocationValueAt(j, randValue);
 			
-			randValue = generator.nextInt(2 * Setup.SPEED_MAX) - Setup.SPEED_MAX;
+			randValue = Setup.SPEED_MIN + generator.nextInt(Setup.SPEED_MAX - Setup.SPEED_MIN);
 			_target.setVelocityValueAt(j, randValue);
 		}
 	}
@@ -99,7 +104,7 @@ public class PSO {
 				randValue = generator.nextInt(Setup.XMAX) + Setup.XMIN;
 				particle.setLocationValueAt(j, randValue);
 				
-				randValue = generator.nextInt(2 * Setup.SPEED_MAX) - Setup.SPEED_MAX;
+				randValue = Setup.SPEED_MIN + generator.nextInt(Setup.SPEED_MAX - Setup.SPEED_MIN);
 				particle.setVelocityValueAt(j, randValue);
 			}
 			
@@ -257,5 +262,4 @@ public class PSO {
 	public boolean isEarlyEnd(){
 		return _swarm.getGlobalBestParticle().getFitness() >= Setup.FITNESS_TOLERANCE;
 	}
-
 }
