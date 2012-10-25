@@ -4,5 +4,5 @@
 <!ANG> = getHeading() | getGunHeading() | getRadarHeading() | e.getHeading() | e.getBearing()
 <!ANX> = getHeading() | getGunHeading() | getRadarHeading() | e.getHeading() | e.getBearing() | 90 | 180 | 270 | 360
 <!SCR> = getX() | getY() | e.getDistance()
-<!SCX> = getX() | getY() | e.getDistance() | 0 | 50 | 100 | 150 | 200 | 250 | 300 | 350 | 400 | 450 | 500 | 550 | 600
+<!SCX> = getX() | getY() | e.getDistance() | 0 | 100 | 150 | 200 | 250 | 300 | 350 | 400 | 450 | 500 | 550 | 600
 <!FIR> = 1 | 2 | 3
