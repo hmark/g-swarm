@@ -56,9 +56,11 @@ public class PSO {
 			updateVelocities(iter);
 			updateLocations();
 			
+			//System.out.println("----");
 			PSOLogger.logIteration(iter, _swarm);
 			//PSOLogger.logBestLocation(_swarm);
 			//PSOLogger.logParticleLocation(_target);
+			//System.out.println("----");
 		}
 		
 		calculateFitness();
@@ -155,6 +157,10 @@ public class PSO {
 		
 		for (int i = 1; i < Setup.PARTICLES; i++){
 			particle = _swarm.getParticleAt(i);
+			//System.out.println("...");
+			//PSOLogger.logParticleLocation(particle);
+			//System.out.println("...");
+			
 			if (globalBestParticle.getLocalBestFitness() < particle.getLocalBestFitness())
 				globalBestParticle = particle;
 		}

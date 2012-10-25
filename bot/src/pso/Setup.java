@@ -18,7 +18,7 @@ public class Setup {
 	/**
 	 * Dimensions number of search space.
 	 */
-	public static final int DIMENSIONS = 100;
+	public static final int DIMENSIONS = 50;
 	
 	// PSO initial location and velocity coefficients
 	
@@ -35,12 +35,12 @@ public class Setup {
 	/**
 	 * Minimum speed of particle for dimension.
 	 */
-	public static final int SPEED_MIN = 0;
+	public static final int SPEED_MIN = -32;
 	
 	/**
 	 * Maximum speed of particle for dimension.
 	 */
-	public static final int SPEED_MAX = 255;
+	public static final int SPEED_MAX = 32;
 	
 	// PSO velocity update coefficients
 	
@@ -57,12 +57,12 @@ public class Setup {
 	/**
 	 * Minimum inertia weight coefficient.
 	 */
-	public static final double WMIN = 0.4;
+	public static final double WMIN = 0;
 	
 	/**
 	 * Starting inertia weight coefficient.
 	 */
-	public static final double WMAX = 0.9;
+	public static final double WMAX = 1.0;
 	
 	// PSO stop condition limits
 	
