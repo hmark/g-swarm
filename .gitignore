@@ -2,6 +2,8 @@
 ## Eclipse
 #################
 
+bot/test/
+
 *.pydevproject
 .project
 .metadata
