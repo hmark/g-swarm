@@ -1,8 +1,23 @@
 package log;
 
 import pso.*;
+import utils.FileUtils;
 
 public class PSOLogger {
+	
+	static public void logGSwarmIteration(String prefix, int iter, Swarm swarm){
+		String data = "";
+		Particle particle;
+		
+		for (int j = 0; j < Setup.PARTICLES; j++){
+			particle = swarm.getParticleAt(j);
+			data += particle.getSrc() + " : " + particle.getFitness() + "\n";
+			data += particle.getBestSrc() + " : " + particle.getLocalBestFitness() + "\n";
+			data += "----------\n";
+		}
+		
+		FileUtils.saveStringToFile(prefix + "results/iter" + (10000 + iter), data);
+	}
 	
 	static public void logIteration(int iter, Swarm swarm){
 		System.out.println("------------------------");
@@ -38,5 +53,11 @@ public class PSOLogger {
 		for (int i = 0; i < dims; i++){
 			System.out.println("PART-DIM[" + i + "]: " + particle.getLocationValueAt(i));
 		}	
+	}
+	
+	static public void logGSwarmParticle(Particle particle){
+		System.out.println("------------------------");
+		System.out.println(particle.getSrc() + " : " + particle.getFitness());
+		System.out.println(particle.getBestSrc() + " : " + particle.getLocalBestFitness());
 	}
 }
