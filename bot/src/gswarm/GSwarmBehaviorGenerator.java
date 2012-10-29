@@ -24,7 +24,7 @@ public class GSwarmBehaviorGenerator extends BehaviorGenerator {
 			
 			rule = _grammar.getRuleByNonTerminal(nonTerminal);
 			expressionsNum = rule.getExpressionsNumber();
-			derivationValue = particle.getLocationValueAt(vectorIndex);
+			derivationValue = particle.getLocationValueAt(vectorIndex % dims);
 			ruleIndex = derivationValue % expressionsNum;
 			//System.out.println(derivationValue + " % " + expressionsNum + " = " + ruleIndex);
 			expression = rule.getExpressionAt(ruleIndex);
@@ -33,8 +33,8 @@ public class GSwarmBehaviorGenerator extends BehaviorGenerator {
 			_body = _body.substring(0, index) + expression + _body.substring(index + 6);
 			//System.out.println(_body);
 			
-			if (++vectorIndex >= dims)
-				vectorIndex = 0;
+			if (++vectorIndex > Setup.CONSTRAINT)
+				return -1;
 		}
 		
 		return vectorIndex;

@@ -56,12 +56,20 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 		
 		String body = FileUtils.convertFileToString(_filename);
 		
+		particle.setValid(true);
+		
 		for (int i = 0; i < programsNum; i++){
 			program = _gSwarmPrograms.get(i);
 			program.loadGrammar();
 			lastIndex = program.generateBody(particle, lastIndex);
+			System.out.println("last index " + lastIndex);
 			
-			body = body.replace(program.getKey(), program.getBody());
+			body = body.replaceFirst(program.getKey(), program.getBody());
+			
+			if (lastIndex == -1){
+				particle.setValid(false);
+				break;
+			}
 		}
 		
 		String path = particle.getSrc();

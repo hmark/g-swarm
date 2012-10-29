@@ -24,6 +24,8 @@ public class Particle {
 	private String _src;
 	
 	private String _bestSrc;
+	
+	private boolean _valid = true;
 
 	/**
 	 * Constructor creates location, velocity and best location vectors with specified dimension size.
@@ -183,6 +185,14 @@ public class Particle {
 	
 	public String getBestSrc() {
 		return _bestSrc;
+	}
+
+	public boolean isValid() {
+		return _valid;
+	}
+
+	public void setValid(boolean _valid) {
+		this._valid = _valid;
 	}
 	
 }

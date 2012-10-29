@@ -13,12 +13,14 @@ public class Setup {
 	/**
 	 * Number of particles in swarm.
 	 */
-	public static final int PARTICLES = 50;
+	public static final int PARTICLES = 100;
 	
 	/**
 	 * Dimensions number of search space.
 	 */
 	public static final int DIMENSIONS = 50;
+	
+	public static final int CONSTRAINT = 500;
 	
 	// PSO initial location and velocity coefficients
 	
@@ -47,7 +49,7 @@ public class Setup {
 	/**
 	 * Accelerator coefficient of cognitive component.
 	 */
-	public static final double C1 = 1.0;
+	public static final double C1 = 0.5;
 	
 	/**
 	 * Accelerator coefficient of social component.

@@ -26,7 +26,11 @@ public class GSwarm extends PSO {
 				setParticleId(particle, i, j);
 				
 				robotGen.generateRobot(particle);
-				RobotTester.testRobot(particle);
+				
+				if (particle.isValid())
+					RobotTester.testRobot(particle);
+				else 
+					particle.setFitness(0);
 			}
 			
 			PSOLogger.logGSwarmIteration(_filePrefix, i, _swarm);
