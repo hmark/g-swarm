@@ -1,15 +1,11 @@
 package external;
 
-import generator.BehaviorGenerator;
-import grammar.Rule;
-
 import java.io.*;
 import java.lang.Runtime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pso.Particle;
-import utils.FileUtils;
 
 public class RobotTester {
 	

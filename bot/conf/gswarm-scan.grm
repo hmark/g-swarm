@@ -1,4 +1,4 @@
-<!ACT> = fire(<!FIR>); | if(<!ANG> > <!ANX>){<!ACT>}else{<!ACT>} | if(<!ERG> > <!ERX>){<!ACT>}else{<!ACT>} | if(<!SCR> > <!SCX>){<!ACT>}else{<!ACT>} | turnGunLeft(<!ANG>); | turnLeft(<!ANG>); | ahead(<!SCX>); | back(<!SCX>); | doNothing();
+<!ACT> = fire(<!FIR>); | if(<!ANG> > <!ANX>){<!ACT>}else{<!ACT>} | if(<!ERG> > <!ERX>){<!ACT>}else{<!ACT>} | if(<!SCR> > <!SCX>){<!ACT>}else{<!ACT>} | if(<!ANG> > <!ANX>){<!ACT>} | if(<!ERG> > <!ERX>){<!ACT>} | if(<!SCR> > <!SCX>){<!ACT>} | turnGunLeft(<!ANG>); | turnLeft(<!ANG>); | ahead(<!SCX>); | back(<!SCX>); | doNothing();
 <!ERG> = getEnergy() | e.getEnergy()
 <!ERX> = getEnergy() | e.getEnergy() | 25 | 50 | 75 | 100
 <!ANG> = getHeading() | getGunHeading() | getRadarHeading() | e.getHeading() | e.getBearing()
