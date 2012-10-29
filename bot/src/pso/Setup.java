@@ -18,7 +18,7 @@ public class Setup {
 	/**
 	 * Dimensions number of search space.
 	 */
-	public static final int DIMENSIONS = 50;
+	public static final int DIMENSIONS = 100;
 	
 	public static final int CONSTRAINT = 500;
 	
@@ -49,7 +49,7 @@ public class Setup {
 	/**
 	 * Accelerator coefficient of cognitive component.
 	 */
-	public static final double C1 = 0.5;
+	public static final double C1 = 1.0;
 	
 	/**
 	 * Accelerator coefficient of social component.
@@ -71,7 +71,7 @@ public class Setup {
 	/**
 	 * Iterations number of particle swarm algorithm.
 	 */
-	public static final int ITERATIONS = 1000;
+	public static final int ITERATIONS = 10000;
 	
 	/**
 	 * Fitness tolerance of acceptable solution.
