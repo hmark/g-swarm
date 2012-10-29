@@ -11,8 +11,8 @@ public class GSwarmRobot extends Robot {
 
 	public void onScannedRobot(ScannedRobotEvent e) {
 		ahead(#gswarm-simple.grm);
-		turnLeft(#gswarm-simple.grm);
-		turnGunLeft(#gswarm-simple.grm);
+		turnLeft(robocode.util.Utils.normalRelativeAngleDegrees(#gswarm-simple.grm));
+		turnGunLeft(robocode.util.Utils.normalRelativeAngleDegrees(#gswarm-simple.grm));
 	}
 
 }
