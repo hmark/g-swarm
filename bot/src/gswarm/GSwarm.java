@@ -1,11 +1,14 @@
 package gswarm;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import log.PSOLogger;
 import pso.PSO;
 import pso.Particle;
 import pso.Setup;
 import utils.DateUtils;
-import external.RobotTester;
+import external.*;
 
 public class GSwarm extends PSO {
 	
@@ -17,12 +20,14 @@ public class GSwarm extends PSO {
 	public void start(){
 		generateInitialSwarm();
 		
-		GSwarmRobotGenerator robotGen = new GSwarmRobotGenerator("conf/bot.tmpl");
 		Particle particle;
+		GSwarmRobotGenerator robotGen = new GSwarmRobotGenerator("conf/bot.tmpl");
 		
 		for (int i = 0; i < Setup.ITERATIONS; i++){
+			
 			for (int j = 0; j < Setup.PARTICLES; j++){
 				particle = _swarm.getParticleAt(j);
+				
 				setParticleId(particle, i, j);
 				
 				robotGen.generateRobot(particle);

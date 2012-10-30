@@ -106,6 +106,8 @@ public class RobotTester {
 		    }
 		} catch (IOException e) {
 			System.err.println("Error: " + e.getMessage());
+		} catch (java.lang.NullPointerException e) {
+			System.err.println("Error: " + e.getMessage());
 		}
 		
 		return 0;

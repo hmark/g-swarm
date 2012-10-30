@@ -49,7 +49,7 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 		}
 	}
 	
-	protected void generateRobot(Particle particle){
+	public void generateRobot(Particle particle){
 		int programsNum = _gSwarmPrograms.size();
 		int lastIndex = 0;
 		GSwarmBehaviorGenerator program;
@@ -62,7 +62,7 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 			program = _gSwarmPrograms.get(i);
 			program.loadGrammar();
 			lastIndex = program.generateBody(particle, lastIndex);
-			System.out.println("last index " + lastIndex);
+			//System.out.println("last index " + lastIndex);
 			
 			body = body.replaceFirst(program.getKey(), program.getBody());
 			
