@@ -22,6 +22,7 @@ public class GSwarm extends PSO {
 		
 		Particle particle;
 		GSwarmRobotGenerator robotGen = new GSwarmRobotGenerator("conf/bot.tmpl");
+		int result;
 		
 		for (int i = 0; i < Setup.ITERATIONS; i++){
 			
@@ -32,8 +33,21 @@ public class GSwarm extends PSO {
 				
 				robotGen.generateRobot(particle);
 				
-				if (particle.isValid())
-					RobotTester.testRobot(particle);
+				//if (particle.isValid())
+				//	RobotTester.testRobot(particle);
+				//else 
+				//	particle.setFitness(0);
+			}
+			
+			RobotTester.startTest(Setup.PARTICLES, i, _filePrefix);
+			
+			for (int j = 0; j < Setup.PARTICLES; j++){
+				particle = _swarm.getParticleAt(j);
+				
+				if (particle.isValid()){
+					result = RobotTester.loadResult(particle.getName() + ".rsl");
+					particle.setFitness(result);
+				}
 				else 
 					particle.setFitness(0);
 			}
@@ -48,7 +62,7 @@ public class GSwarm extends PSO {
 		String name, filepath;
 		
 		name = "particle" + (10000 + pos);
-		filepath = _filePrefix + "iter" + (10000 + iter) + "/" + name;
+		filepath = _filePrefix + "iter" + (10000 + iter) + "/" + name + "/GSwarmRobot.java";
 		particle.setName(name);
 		particle.setSrc(filepath);
 	}
