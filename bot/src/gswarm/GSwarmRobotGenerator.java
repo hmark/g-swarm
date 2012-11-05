@@ -72,10 +72,9 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 			}
 		}
 		
-		String path = particle.getSrc();
-		
-		FileUtils.saveStringToFile("test/GSwarmRobot.java", body);
-		FileUtils.saveStringToFile(path + ".java", body);
+		//FileUtils.saveStringToFile("test/GSwarmRobot.java", body);
+		if (particle.isValid())
+			FileUtils.saveStringToFile(particle.getSrc(), body);
 		//JavaRobotCompiler.compileRobot(path);
 	}	
 
