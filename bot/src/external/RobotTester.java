@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pso.Particle;
+import pso.Setup;
 
 public class RobotTester {
 	
@@ -18,6 +19,16 @@ public class RobotTester {
 	public static final String JAVA_COMPILER_PATH = "C:/Program Files/Java/jdk1.7.0_03/bin/javac";
 	
 	public static final String BATTLE_CONFIG_PATH = "battles/gswarm.battle";
+	
+	public static void startTest(int particlesNum, int iteration, String testPath){
+		try {
+			String command = "python " + particlesNum + " " + iteration + " "  + testPath;
+			System.out.println(command);
+			Runtime.getRuntime().exec(command);
+		} catch (IOException e) {
+			System.err.println("Error: " + e.getMessage());
+		}	
+	}
 	
 	public static void testRobot(Particle particle){
 		String name = particle.getSrc();
