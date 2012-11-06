@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 import pso.*;
 import utils.FileUtils;
 import generator.RobotGenerator;
-import external.*;
 
 public class GSwarmRobotGenerator extends RobotGenerator {
 	
@@ -65,6 +64,7 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 			//System.out.println("last index " + lastIndex);
 			
 			body = body.replaceFirst(program.getKey(), program.getBody());
+			body = body.replaceFirst("#ROBOTCLASS#", particle.getId());
 			
 			if (lastIndex == -1){
 				particle.setValid(false);

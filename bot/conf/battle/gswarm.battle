@@ -3,7 +3,7 @@
 robocode.battle.numRounds=10
 robocode.battle.gunCoolingRate=0.1
 robocode.battleField.width=600
-robocode.battle.selectedRobots=sample.MyFirstRobot,GSwarmRobot*
+robocode.battle.selectedRobots=sample.MyFirstRobot,gswarm.#ROBOT#
 robocode.battle.rules.inactivityTime=450
 robocode.battle.hideEnemyNames=true
 robocode.battleField.height=600
