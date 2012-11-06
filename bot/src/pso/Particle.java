@@ -20,8 +20,10 @@ public class Particle {
 	private double _localBestFitness = 0;
 	private double _fitness;
 	
+	private String _id;
 	private String _name;
 	private String _src;
+	private String _dir;
 	
 	private String _bestSrc;
 	
@@ -167,6 +169,14 @@ public class Particle {
 		return _localBestFitness;
 	}
 	
+	public void setId(String id) {
+		_id = id;
+	}
+	
+	public String getId() {
+		return _id;
+	}
+	
 	public void setName(String name) {
 		_name = name;
 	}
@@ -181,6 +191,14 @@ public class Particle {
 	
 	public String getSrc() {
 		return _src;
+	}
+	
+	public void setDir(String dir) {
+		_dir = dir;
+	}
+	
+	public String getDir() {
+		return _dir;
 	}
 	
 	public String getBestSrc() {

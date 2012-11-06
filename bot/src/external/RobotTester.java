@@ -5,85 +5,19 @@ import java.lang.Runtime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pso.Particle;
-import pso.Setup;
-
 public class RobotTester {
 	
-	public static final String ROBOCODE_PATH = "c:/robocode";
-	
-	public static final String ROBOTS_PATH = "c:/robocode/robots";
-	
-	public static final String PROJECT_PATH = "c:/users/h/workspace/_github/g-swarm/bot/";
-	
-	public static final String JAVA_COMPILER_PATH = "C:/Program Files/Java/jdk1.7.0_03/bin/javac";
-	
-	public static final String BATTLE_CONFIG_PATH = "battles/gswarm.battle";
+	private static final String TEST_SCRIPT_PATH = "C:/Users/h/Workspace/_github/g-swarm/bot/script/robot_tester.py";
 	
 	public static void startTest(int particlesNum, int iteration, String testPath){
 		try {
-			String command = "python " + particlesNum + " " + iteration + " "  + testPath;
+			String command = "python " + TEST_SCRIPT_PATH + " " + particlesNum + " " + iteration + " "  + testPath;
 			System.out.println(command);
-			Runtime.getRuntime().exec(command);
-		} catch (IOException e) {
+			Process p = Runtime.getRuntime().exec(command);
+			p.waitFor();
+		} catch (IOException | InterruptedException e) {
 			System.err.println("Error: " + e.getMessage());
 		}	
-	}
-	
-	public static void testRobot(Particle particle){
-		String name = particle.getSrc();
-		String resultsPath = name + ".rsl";
-		
-		compileRobot(name);
-		startBattle(resultsPath);
-		calculateFitness(particle, resultsPath);
-	}
-
-	public static void compileRobot(String src){
-		try {
-			String command = JAVA_COMPILER_PATH + " -d " + ROBOTS_PATH + " -cp " + ROBOCODE_PATH + "/libs/*; test/GSwarmRobot.java";
-			System.out.println(command);
-			
-			Runtime.getRuntime().exec(command);
-		} catch (IOException e) {
-			System.err.println("Error: " + e.getMessage());
-		}
-	}
-	
-	public static void startBattle(String resultsPath){
-		try {
-			String line;
-			String command = "java -Xmx512M -Dsun.io.useCanonCaches=false -cp " + "libs/robocode.jar robocode.Robocode -battle " + BATTLE_CONFIG_PATH + " -nodisplay -results " + PROJECT_PATH + resultsPath;
-			System.out.println(command);
-			
-			Process p = Runtime.getRuntime().exec(command, new String[0], new File(ROBOCODE_PATH));
-			
-			//BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()) );
-			BufferedReader errIn = new BufferedReader(new InputStreamReader(p.getErrorStream()) );
-			
-		    //while ((line = in.readLine()) != null) {
-		    //	System.out.println(line);
-		    //}
-		    
-		    while ((line = errIn.readLine()) != null) {
-		    	System.out.println(line);
-		    }
-		    
-		    //in.close();
-		    errIn.close();
-		    
-		    p.waitFor();
-		    
-		} catch (IOException e) {
-			System.err.println("Error: " + e.getMessage());
-		} catch (InterruptedException e) {
-			System.err.println("Error: " + e.getMessage());
-		}
-	}
-	
-	public static void calculateFitness(Particle particle, String resultsPath){
-		int result = loadResult(resultsPath);
-		particle.setFitness(result);
 	}
 	
 	public static int loadResult(String resultsPath){

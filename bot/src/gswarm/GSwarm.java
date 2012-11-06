@@ -1,8 +1,5 @@
 package gswarm;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import log.PSOLogger;
 import pso.PSO;
 import pso.Particle;
@@ -32,11 +29,6 @@ public class GSwarm extends PSO {
 				setParticleId(particle, i, j);
 				
 				robotGen.generateRobot(particle);
-				
-				//if (particle.isValid())
-				//	RobotTester.testRobot(particle);
-				//else 
-				//	particle.setFitness(0);
 			}
 			
 			RobotTester.startTest(Setup.PARTICLES, i, _filePrefix);
@@ -45,7 +37,7 @@ public class GSwarm extends PSO {
 				particle = _swarm.getParticleAt(j);
 				
 				if (particle.isValid()){
-					result = RobotTester.loadResult(particle.getName() + ".rsl");
+					result = RobotTester.loadResult(particle.getDir() + "result.rsl");
 					particle.setFitness(result);
 				}
 				else 
@@ -59,10 +51,15 @@ public class GSwarm extends PSO {
 	}
 	
 	private void setParticleId(Particle particle, int iter, int pos){
-		String name, filepath;
+		String name, filepath, id, dir;
 		
-		name = "particle" + (10000 + pos);
-		filepath = _filePrefix + "iter" + (10000 + iter) + "/" + name + "/GSwarmRobot.java";
+		id = Integer.toString(10000 + pos);
+		name = "particle" + id;
+		dir = _filePrefix + "iter" + (10000 + iter) + "/" + name + "/";
+		filepath = dir + "GSwarmRobot" + id + ".java";
+		
+		particle.setId(id);
+		particle.setDir(dir);
 		particle.setName(name);
 		particle.setSrc(filepath);
 	}
