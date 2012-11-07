@@ -18,9 +18,10 @@ class Logger():
 
 class CompilationThread(threading.Thread):
 
-	def __init__(self, particle_id, robots_src_path):
+	def __init__(self, semaphore, particle_id, robots_src_path):
 		threading.Thread.__init__(self)
 
+		self.semaphore = semaphore
 		self.particle_id = particle_id
 		self.JAVAC_PATH = "C:/Program Files/Java/jdk1.7.0_03/bin/javac"
 		self.robots_src_path = robots_src_path
@@ -31,7 +32,9 @@ class CompilationThread(threading.Thread):
 		target_scr_path = target_dir_path + "/GSwarmRobot" + self.particle_id + ".java"
 		
 		if os.path.isfile(target_scr_path):
+			self.semaphore.acquire()
 			subprocess.call("%s -d %s -cp %s/libs/*; %s" % (self.JAVAC_PATH, target_dir_path, self.ROBOCODE_PATH, target_scr_path))
+			self.semaphore.release()
 		else:
 			logger.write("Missing source dir for robot #" + self.particle_id)
 
@@ -40,9 +43,10 @@ class CompilationThread(threading.Thread):
 
 class BattleThread(threading.Thread):
 
-	def __init__(self, particle_id, robots_src_path):
+	def __init__(self, semaphore, particle_id, robots_src_path):
 		threading.Thread.__init__(self)
 
+		self.semaphore = semaphore
 		self.particle_id = particle_id
 		self.robots_src_path = robots_src_path
 		self.ROBOCODE_PATH = "C:/robocode"
@@ -55,10 +59,12 @@ class BattleThread(threading.Thread):
 		
 	def startBattle(self):
 		fh = open("NUL","w")
-		logger.write("battle start for particle " + self.particle_id)
 		result_path = self.robots_src_path + "/particle" + self.particle_id + "/result.rsl"
+		self.semaphore.acquire()
+		logger.write("battle semaphore acquired " + self.particle_id)
 		subprocess.call("java -DPARALLEL=true -Xmx512M -Dsun.io.useCanonCaches=false -cp %s/libs/robocode.jar robocode.Robocode -cwd %s -battle %s -nodisplay -results %s" % (self.ROBOCODE_PATH, self.ROBOCODE_PATH, self.BATTLE_CONFIG_PATH, result_path), stdout = fh, stderr = fh)
-		logger.write("battle end for particle" + self.particle_id)
+		logger.write("battle semaphore released" + self.particle_id)
+		self.semaphore.release()
 		fh.close()
 
 	def run(self):
@@ -88,11 +94,15 @@ ROBOTS_SRC_PATH = os.path.dirname(__file__) + "/../" + sys.argv[3] + "iter" + IT
 
 logger = Logger(ROBOTS_SRC_PATH, ITER_STR)
 
+COMPILATION_SEMAS = 25
+TEST_SEMAS = 10
+
 # compile robots
+sema = threading.Semaphore(COMPILATION_SEMAS)
 threads = []
 start_time = time()
 for i in range(0, PARTICLES):
-	t = CompilationThread(transToParticleId(i), ROBOTS_SRC_PATH)
+	t = CompilationThread(sema, transToParticleId(i), ROBOTS_SRC_PATH)
 	threads.append(t)
 
 [t.start() for t in threads]
@@ -101,10 +111,11 @@ for i in range(0, PARTICLES):
 logger.write("Compilation time: " + str(time() - start_time))
 
 # test robots
+sema = threading.Semaphore(TEST_SEMAS)
 threads = []
 start_time = time()
 for i in range(0, PARTICLES):
-	t = BattleThread(transToParticleId(i), ROBOTS_SRC_PATH)
+	t = BattleThread(sema, transToParticleId(i), ROBOTS_SRC_PATH)
 	threads.append(t)
 
 [t.start() for t in threads]
