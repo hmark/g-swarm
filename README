@@ -13,25 +13,28 @@ tournament measurement
 
 v0.7 (TODO - 05.12.2012)
 docs - final version
+distributed computation experiments
 
 v0.6 (TODO - 28.11.2012)
 docs - 2nd version
-distributed computation experiments
-
-v0.5 (TODO - 21.11.2012)
-docs - 1st version
 first-time refactoring (file utils)
 PSO library experiments
 
+v0.5 (TODO - 21.11.2012)
+docs - 1st version
+gui config window
+simple charts for mean and best values
+
 v0.4 (TODO - 14.11.2012)
+simple gui (projec/iterations/particles list, source preview)
+testing against set of robots
 command line options parser (-p <number of particles> ...)
+open robocode battle from gui (for specified particle source)
 simple distributed computing algorithm (master-slave for 2 computers)
 
-v0.3 (TODO - 07.11.2012)
+v0.3 (07.11.2012)
 OK - simple paralelization of computation (robocode battle bottleneck issue)
 OK - threads performance experiments
-simple gui (sortable particles list, source preview, robocode sync)
-testing against set of robots
 
 v0.2 (31.10.2012)
 OK - robocode platform synchronization
