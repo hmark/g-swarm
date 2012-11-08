@@ -6,17 +6,20 @@ Author:	Marek Hlaváč
 h2. Changelog
 
 h3. v0.3 (08.11.2012)
+
 thread-based paralelization of computation (robocode battle bottleneck issue)
 thread performance experiments
 basic gui (solution tree hierarchy, stats/results/source preview)
 
-h4. v0.2 (31.10.2012)
+h3. v0.2 (31.10.2012)
+
 robocode platform synchronization
 simple battle configuration
 simple fitness calculator (based on battle results against one weak robot)
 grammar without terminal actions (all relevant action should be static in bot template)
 
-h5. v0.1 (24.10.2012)
+h3. v0.1 (24.10.2012)
+
 project architecture
 PSO implementation
 robots grammar support
