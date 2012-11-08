@@ -13,68 +13,68 @@ public class Setup {
 	/**
 	 * Number of particles in swarm.
 	 */
-	public static final int PARTICLES = 50;
+	public static int PARTICLES = 50;
 	
 	/**
 	 * Dimensions number of search space.
 	 */
-	public static final int DIMENSIONS = 100;
+	public static int DIMENSIONS = 100;
 	
-	public static final int CONSTRAINT = 500;
+	public static int CONSTRAINT = 500;
 	
 	// PSO initial location and velocity coefficients
 	
 	/**
 	 * Lower constraint of dimension value.
 	 */
-	public static final int XMIN = 0;
+	public static int XMIN = 0;
 	
 	/**
 	 * Upper constraint of dimension value.
 	 */
-	public static final int XMAX = 255;
+	public static int XMAX = 255;
 	
 	/**
 	 * Minimum speed of particle for dimension.
 	 */
-	public static final int SPEED_MIN = -32;
+	public static int SPEED_MIN = -32;
 	
 	/**
 	 * Maximum speed of particle for dimension.
 	 */
-	public static final int SPEED_MAX = 32;
+	public static int SPEED_MAX = 32;
 	
 	// PSO velocity update coefficients
 	
 	/**
 	 * Accelerator coefficient of cognitive component.
 	 */
-	public static final double C1 = 1.0;
+	public static double C1 = 1.0;
 	
 	/**
 	 * Accelerator coefficient of social component.
 	 */
-	public static final double C2 = 1.0; 
+	public static double C2 = 1.0; 
 	
 	/**
 	 * Minimum inertia weight coefficient.
 	 */
-	public static final double WMIN = 0;
+	public static double WMIN = 0;
 	
 	/**
 	 * Starting inertia weight coefficient.
 	 */
-	public static final double WMAX = 1.0;
+	public static double WMAX = 1.0;
 	
 	// PSO stop condition limits
 	
 	/**
 	 * Iterations number of particle swarm algorithm.
 	 */
-	public static final int ITERATIONS = 10000;
+	public static int ITERATIONS = 10000;
 	
 	/**
 	 * Fitness tolerance of acceptable solution.
 	 */
-	public static final int FITNESS_TOLERANCE = 50; 
+	public static int FITNESS_TOLERANCE = 50; 
 }
