@@ -6,6 +6,7 @@ import pso.Particle;
 import pso.Setup;
 import utils.DateUtils;
 import external.*;
+import gui.Window;
 
 public class GSwarm extends PSO implements Runnable {
 	
@@ -40,13 +41,15 @@ public class GSwarm extends PSO implements Runnable {
 					result = RobotTester.loadResult(particle.getDir() + "result.rsl");
 					particle.setFitness(result);
 				}
-				else 
+				else
 					particle.setFitness(0);
 			}
 			
 			//PSOLogger.logGSwarmIteration(_filePrefix, i, _swarm);
 			
 			executeIteration(i);
+			
+			Window.getInstance().update();
 		}
 	}
 	
