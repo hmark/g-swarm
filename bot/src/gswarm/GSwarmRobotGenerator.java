@@ -73,8 +73,10 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 		}
 		
 		//FileUtils.saveStringToFile("test/GSwarmRobot.java", body);
-		if (particle.isValid())
+		if (particle.isValid()){
+			particle.setTreeSize(lastIndex);
 			FileUtils.saveStringToFile(particle.getSrc(), body);
+		}
 		//JavaRobotCompiler.compileRobot(path);
 	}	
 

@@ -28,6 +28,8 @@ public class Particle {
 	private String _bestSrc;
 	private int _bestIteration;
 	
+	private int _treeSize;
+	
 	private boolean _valid = true;
 
 	/**
@@ -217,6 +219,14 @@ public class Particle {
 
 	public void setValid(boolean _valid) {
 		this._valid = _valid;
+	}
+	
+	public void setTreeSize(int size){
+		_treeSize = size;
+	}
+	
+	public int getTreeSize() {
+		return _treeSize;
 	}
 	
 }
