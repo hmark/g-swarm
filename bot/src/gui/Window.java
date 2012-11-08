@@ -36,12 +36,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.Font;
+import javax.swing.border.LineBorder;
+
+import pso.Setup;
+
+import java.awt.Color;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Window extends JFrame {
 	
 	private static Window instance;
 
 	private JPanel contentPane;
+	
+	private JLabel testsLabel;
+	private JLabel itersLabel;
+	private JLabel particlesLabel;
 	
 	private DefaultListModel testsListModel = new DefaultListModel();
 	private DefaultListModel iterationsListModel = new DefaultListModel();
@@ -51,9 +64,19 @@ public class Window extends JFrame {
 	private int iterationSelectedIndex = -1;
 	private int particleSelectedIndex = -1;
 	
+	JTextArea sourceTextArea;
 	JTextArea propsTextArea;
 	JTextArea scoresTextArea;
-	JTextArea sourceTextArea;
+	private JTextField swarmSizeField;
+	private JTextField dimsField;
+	private JTextField xmaxField;
+	private JTextField speedMinField;
+	private JTextField speedMaxField;
+	private JTextField itersField;
+	private JTextField c1Field;
+	private JTextField c2Field;
+	private JTextField minWeightField;
+	private JTextField maxWeightField;
 
 	/**
 	 * Launch the application.
@@ -88,64 +111,299 @@ public class Window extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1196, 722);
+		setBounds(0, 0, 1196, 722);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
-		JMenu mnTest = new JMenu("Menu");
-		menuBar.add(mnTest);
-		
-		JMenuItem mntmRunTest = new JMenuItem("Run test");
-		mntmRunTest.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				new RunTestCommand();
-			}
-		});
-		mnTest.add(mntmRunTest);
-		
-		JMenuItem mntmOpenTest = new JMenuItem("Open test");
-		mnTest.add(mntmOpenTest);
-		
-		JMenuItem mntmAbout = new JMenuItem("About");
-		mnTest.add(mntmAbout);
-		
-		JMenuItem mntmExit = new JMenuItem("Exit");
-		mntmExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new ExitCommand();
-			}
-		});
-		mnTest.add(mntmExit);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JList TestsList = new JList(testsListModel);
-		TestsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		TestsList.setAutoscrolls(false);
-		TestsList.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				JList lsm = (JList)e.getSource();
-				int index = lsm.getSelectedIndex();
-				if (index != -1)
-					Window.getInstance().openTest(index);
-			}
-		});
+		JLabel lblStats = new JLabel("Properties");
+		lblStats.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
-		JList IterationsList = new JList(iterationsListModel);
-		IterationsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		IterationsList.setAutoscrolls(false);
-		IterationsList.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				JList lsm = (JList)e.getSource();
-				int index = lsm.getSelectedIndex();
-				if (index != -1)
-					Window.getInstance().openIteration(index);
+		JLabel lblScoringTable = new JLabel("Results");
+		lblScoringTable.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		JLabel lblSource = new JLabel("Source");
+		lblSource.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		JScrollPane scrollPane = new JScrollPane();
+		
+		testsLabel = new JLabel("Tests (0)");
+		testsLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		itersLabel = new JLabel("Iterations (0)");
+		itersLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		particlesLabel = new JLabel("Particles (0)");
+		particlesLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		
+		JScrollPane scrollPane_3 = new JScrollPane();
+		
+		JScrollPane scrollPane_4 = new JScrollPane();
+		
+		JScrollPane scrollPane_5 = new JScrollPane();
+		
+		JScrollPane scrollPane_6 = new JScrollPane();
+		
+		JLabel lblParticles_1 = new JLabel("Swarm Size");
+		lblParticles_1.setToolTipText("Number of particles in swarm");
+		lblParticles_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		JLabel lblNewLabel = new JLabel("Dimensions");
+		lblNewLabel.setToolTipText("Size of particle vector");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		JLabel lblNewLabel_1 = new JLabel("Max.Position");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblNewLabel_1.setToolTipText("Maximum value of particle in one dimension");
+		
+		JLabel lblNewLabel_3 = new JLabel("Min.Velocity");
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblNewLabel_3.setToolTipText("Minimal velocity of particle");
+		
+		JLabel lblNewLabel_4 = new JLabel("Max.Velocity");
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblNewLabel_4.setToolTipText("Maximal velocity of particle");
+		
+		JLabel lblNewLabel_5 = new JLabel("Iterations");
+		lblNewLabel_5.setToolTipText("Iteration limit of algorithm");
+		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		swarmSizeField = new JTextField();
+		swarmSizeField.setColumns(10);
+		swarmSizeField.setText(Integer.toString(Setup.PARTICLES));
+		
+		dimsField = new JTextField();
+		dimsField.setColumns(10);
+		dimsField.setText(Integer.toString(Setup.DIMENSIONS));
+		
+		xmaxField = new JTextField();
+		xmaxField.setColumns(10);
+		xmaxField.setText(Integer.toString(Setup.XMAX));
+		
+		speedMinField = new JTextField();
+		speedMinField.setColumns(10);
+		speedMinField.setText(Integer.toString(Setup.SPEED_MIN));
+		
+		speedMaxField = new JTextField();
+		speedMaxField.setColumns(10);
+		speedMaxField.setText(Integer.toString(Setup.SPEED_MAX));
+		
+		JLabel lblNewLabel_6 = new JLabel("Cognitive Coef.");
+		lblNewLabel_6.setToolTipText(" Accelerator coefficient of cognitive component.");
+		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		JLabel lblNewLabel_7 = new JLabel("Social Coef.");
+		lblNewLabel_7.setToolTipText("Accelerator coefficient of social component.");
+		lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		JLabel lblNewLabel_8 = new JLabel("Min.Weight");
+		lblNewLabel_8.setToolTipText("Minimum inertia weight coefficient.");
+		lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		JLabel lblNewLabel_9 = new JLabel("Max.Weight");
+		lblNewLabel_9.setToolTipText("Starting inertia weight coefficient.");
+		lblNewLabel_9.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		itersField = new JTextField();
+		itersField.setColumns(10);
+		itersField.setText(Integer.toString(Setup.ITERATIONS));
+		
+		c1Field = new JTextField();
+		c1Field.setColumns(10);
+		c1Field.setText(Double.toString(Setup.C1));
+		
+		c2Field = new JTextField();
+		c2Field.setColumns(10);
+		c2Field.setText(Double.toString(Setup.C2));
+		
+		minWeightField = new JTextField();
+		minWeightField.setColumns(10);
+		minWeightField.setText(Double.toString(Setup.WMIN));
+		
+		maxWeightField = new JTextField();
+		maxWeightField.setColumns(10);
+		maxWeightField.setText(Double.toString(Setup.WMAX));
+		
+		JButton runTestBtn = new JButton("Run");
+		runTestBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JButton btn = (JButton)e.getSource();
+				if (btn.getText() == "Run"){
+					new RunTestCommand();
+					btn.setText("Stop");
+				}
+				else if (btn.getText() == "Stop"){
+					new StopTestCommand();
+					btn.setText("Run");
+				}
 			}
 		});
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
+								.addComponent(testsLabel))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
+								.addComponent(itersLabel))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(scrollPane_3, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
+								.addComponent(particlesLabel))
+							.addGap(18)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblStats)
+								.addComponent(lblSource)
+								.addComponent(scrollPane_6, GroupLayout.PREFERRED_SIZE, 559, GroupLayout.PREFERRED_SIZE)
+								.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblScoringTable)
+										.addComponent(scrollPane_5, GroupLayout.PREFERRED_SIZE, 563, GroupLayout.PREFERRED_SIZE)
+										.addComponent(scrollPane_4, GroupLayout.PREFERRED_SIZE, 566, GroupLayout.PREFERRED_SIZE))
+									.addPreferredGap(ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+									.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addGap(100))))
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+											.addGroup(gl_contentPane.createSequentialGroup()
+												.addComponent(lblParticles_1)
+												.addGap(18)
+												.addComponent(swarmSizeField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+											.addGroup(gl_contentPane.createSequentialGroup()
+												.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+													.addComponent(lblNewLabel)
+													.addComponent(lblNewLabel_1)
+													.addComponent(lblNewLabel_3))
+												.addPreferredGap(ComponentPlacement.UNRELATED)
+												.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+													.addComponent(xmaxField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+													.addComponent(dimsField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+													.addComponent(speedMinField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+										.addGap(18)
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+											.addComponent(lblNewLabel_6)
+											.addComponent(lblNewLabel_5)
+											.addComponent(lblNewLabel_8)
+											.addComponent(lblNewLabel_7)))
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(lblNewLabel_4)
+										.addPreferredGap(ComponentPlacement.UNRELATED)
+										.addComponent(speedMaxField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addGap(18)
+										.addComponent(lblNewLabel_9)))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+									.addComponent(maxWeightField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(minWeightField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(c2Field, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(c1Field, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(itersField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(runTestBtn, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(testsLabel)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+							.addComponent(itersLabel)
+							.addComponent(particlesLabel)
+							.addComponent(lblStats)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(11)
+									.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(scrollPane_4, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+									.addGap(5)
+									.addComponent(lblScoringTable)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(scrollPane_5, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE)))
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(lblSource)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(scrollPane_6, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE))
+						.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 440, GroupLayout.PREFERRED_SIZE)
+						.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 440, GroupLayout.PREFERRED_SIZE)
+						.addComponent(scrollPane_3, GroupLayout.PREFERRED_SIZE, 440, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblParticles_1)
+						.addComponent(swarmSizeField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_5)
+						.addComponent(itersField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel)
+						.addComponent(dimsField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_6)
+						.addComponent(c1Field, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel_1)
+						.addComponent(xmaxField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_7)
+						.addComponent(c2Field, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(speedMinField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_3)
+						.addComponent(lblNewLabel_8)
+						.addComponent(minWeightField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel_4)
+						.addComponent(speedMaxField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_9)
+						.addComponent(maxWeightField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+					.addComponent(runTestBtn)
+					.addContainerGap())
+		);
+		
+		sourceTextArea = new JTextArea();
+		scrollPane_6.setViewportView(sourceTextArea);
+		sourceTextArea.setBorder(new LineBorder(new Color(0, 0, 0)));
+		sourceTextArea.setFont(new Font("Courier New", Font.PLAIN, 12));
+		sourceTextArea.setEditable(false);
+		
+		scoresTextArea = new JTextArea();
+		scrollPane_5.setViewportView(scoresTextArea);
+		scoresTextArea.setLineWrap(true);
+		scoresTextArea.setBorder(new LineBorder(new Color(0, 0, 0)));
+		scoresTextArea.setFont(new Font("Courier New", Font.PLAIN, 12));
+		scoresTextArea.setEditable(false);
+		
+		propsTextArea = new JTextArea();
+		scrollPane_4.setViewportView(propsTextArea);
+		propsTextArea.setBorder(new LineBorder(new Color(0, 0, 0)));
+		propsTextArea.setLineWrap(true);
+		propsTextArea.setFont(new Font("Courier New", Font.PLAIN, 12));
+		propsTextArea.setEditable(false);
 		
 		JList ParticlesList = new JList(particlesListModel);
+		scrollPane_3.setViewportView(ParticlesList);
+		ParticlesList.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ParticlesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ParticlesList.setAutoscrolls(false);
 		ParticlesList.addListSelectionListener(new ListSelectionListener() {
@@ -157,102 +415,38 @@ public class Window extends JFrame {
 			}
 		});
 		
-		JLabel lblStats = new JLabel("Properties");
-		lblStats.setFont(new Font("Tahoma", Font.BOLD, 12));
+		JList IterationsList = new JList(iterationsListModel);
+		scrollPane_2.setViewportView(IterationsList);
+		IterationsList.setBorder(new LineBorder(new Color(0, 0, 0)));
+		IterationsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		IterationsList.setAutoscrolls(false);
+		IterationsList.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				JList lsm = (JList)e.getSource();
+				int index = lsm.getSelectedIndex();
+				if (index != -1)
+					Window.getInstance().openIteration(index);
+			}
+		});
 		
-		propsTextArea = new JTextArea();
-		propsTextArea.setFont(new Font("Courier New", Font.PLAIN, 12));
-		propsTextArea.setEditable(false);
-		
-		JLabel lblScoringTable = new JLabel("Results");
-		lblScoringTable.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		scoresTextArea = new JTextArea();
-		scoresTextArea.setFont(new Font("Courier New", Font.PLAIN, 12));
-		scoresTextArea.setEditable(false);
-		
-		JLabel lblSource = new JLabel("Source");
-		lblSource.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		sourceTextArea = new JTextArea();
-		sourceTextArea.setFont(new Font("Courier New", Font.PLAIN, 12));
-		sourceTextArea.setEditable(false);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		
-		JLabel lblTests = new JLabel("Tests");
-		lblTests.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		JLabel lblIterations = new JLabel("Iterations");
-		lblIterations.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		JLabel lblParticles = new JLabel("Particles");
-		lblParticles.setFont(new Font("Tahoma", Font.BOLD, 12));
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(TestsList, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblTests))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(IterationsList, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblIterations))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(ParticlesList, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblParticles))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(sourceTextArea)
-						.addComponent(scoresTextArea)
-						.addComponent(propsTextArea, GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE))
-					.addGap(39)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblStats))
-						.addComponent(lblSource)
-						.addComponent(lblScoringTable))
-					.addContainerGap())
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblTests)
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lblIterations)
-							.addComponent(lblParticles)))
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(11)
-									.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(220)
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-										.addComponent(scoresTextArea, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblScoringTable))))
-							.addGap(59)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(sourceTextArea, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblSource)))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(TestsList, GroupLayout.PREFERRED_SIZE, 442, GroupLayout.PREFERRED_SIZE)
-								.addComponent(IterationsList, GroupLayout.PREFERRED_SIZE, 442, GroupLayout.PREFERRED_SIZE)
-								.addComponent(ParticlesList, GroupLayout.PREFERRED_SIZE, 442, GroupLayout.PREFERRED_SIZE)
-								.addComponent(propsTextArea, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblStats))))
-					.addContainerGap(79, Short.MAX_VALUE))
-		);
+		JList TestsList = new JList(testsListModel);
+		scrollPane_1.setViewportView(TestsList);
+		TestsList.setBorder(new LineBorder(new Color(0, 0, 0)));
+		TestsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		TestsList.setAutoscrolls(false);
+		TestsList.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				JList lsm = (JList)e.getSource();
+				int index = lsm.getSelectedIndex();
+				if (index != -1)
+					Window.getInstance().openTest(index);
+			}
+		});
 		contentPane.setLayout(gl_contentPane);
+	}
+	
+	public void update(){
+		findTests();
 	}
 	
 	public void findTests(){
@@ -264,6 +458,8 @@ public class Window extends JFrame {
 		for (int i = 0; i < listOfFiles.length; i++)
 			if (listOfFiles[i].isDirectory())
 				testsListModel.addElement(listOfFiles[i].getName());
+		
+		testsLabel.setText("Tests (" + listOfFiles.length + ")");
 	}
 	
 	public void openTest(int index){
@@ -273,13 +469,15 @@ public class Window extends JFrame {
 		iterationsListModel.removeAllElements();
 
 		String folderName = "test/" + testsListModel.get(index);
-		System.out.println("Opening test with name: " + folderName);
+		//System.out.println("Opening test with name: " + folderName);
 		File folder = new File(folderName);
 		File[] listOfFiles = folder.listFiles();
 
 		for (int i = 0; i < listOfFiles.length; i++)
 			if (listOfFiles[i].isDirectory())
 				iterationsListModel.addElement(listOfFiles[i].getName());
+		
+		itersLabel.setText("Tests (" + listOfFiles.length + ")");
 	}
 	
 	public void openIteration(int index){
@@ -288,13 +486,15 @@ public class Window extends JFrame {
 		particlesListModel.removeAllElements();
 		
 		String folderName = "test/" + testsListModel.get(testSelectedIndex) + "/" + iterationsListModel.get(index);
-		System.out.println("Opening iteration with name: " + folderName);
+		//System.out.println("Opening iteration with name: " + folderName);
 		File folder = new File(folderName);
 		File[] listOfFiles = folder.listFiles();
 		
 		for (int i = 0; i < listOfFiles.length; i++)
 			if (listOfFiles[i].isDirectory() && !listOfFiles[i].getName().equals("logs"))
 				particlesListModel.addElement(listOfFiles[i].getName());
+		
+		particlesLabel.setText("Tests (" + listOfFiles.length + ")");
 	}
 	
 	public void openParticle(int index){
@@ -303,9 +503,9 @@ public class Window extends JFrame {
 		particleId = particleId.substring(particleId.length() - 5, particleId.length());
 		
 		String folderName = "test/" + testsListModel.get(testSelectedIndex) + "/" + iterationsListModel.get(iterationSelectedIndex) + "/" + particlesListModel.get(index);
-		System.out.println("Opening particle with name: " + folderName);
+		//System.out.println("Opening particle with name: " + folderName);
 		
-		propsTextArea.removeAll();
+		sourceTextArea.removeAll();
 		
 		String propText = "NAME: " + folderName + "\n"; 
 		propText += "ITERATION: " + iterationsListModel.get(iterationSelectedIndex) + "\n";
@@ -316,5 +516,45 @@ public class Window extends JFrame {
 		
 		String sourceText = FileUtils.convertFileToString(folderName + "/GSwarmRobot" + particleId + ".java");
 		sourceTextArea.setText(sourceText);
+	}
+	
+	public int getParticlesNum(){
+		return Integer.parseInt(swarmSizeField.getText());
+	}
+	
+	public int getDimensionsNum(){
+		return Integer.parseInt(dimsField.getText());
+	}
+	
+	public int getXMaxNum(){
+		return Integer.parseInt(xmaxField.getText());
+	}
+	
+	public int getSpeedMinNum(){
+		return Integer.parseInt(speedMinField.getText());
+	}
+	
+	public int getSpeedMaxNum(){
+		return Integer.parseInt(speedMaxField.getText());
+	}
+	
+	public int getIterationsNum(){
+		return Integer.parseInt(itersField.getText());
+	}
+	
+	public Double getC1Num(){
+		return Double.parseDouble(c1Field.getText());
+	}
+	
+	public Double getC2Num(){
+		return Double.parseDouble(c2Field.getText());
+	}
+	
+	public Double getMinWeightNum(){
+		return Double.parseDouble(minWeightField.getText());
+	}
+	
+	public Double getMaxWeightNum(){
+		return Double.parseDouble(maxWeightField.getText());
 	}
 }
