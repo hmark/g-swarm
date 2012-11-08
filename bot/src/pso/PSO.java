@@ -40,7 +40,7 @@ public class PSO {
 	 * 4. calculate fitness
 	 * 5. update global fitness
 	 */
-	public void start(){
+	public void run(){
 		generateTargetParticle();
 		generateInitialSwarm();
 		

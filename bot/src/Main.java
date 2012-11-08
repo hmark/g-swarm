@@ -1,5 +1,5 @@
-import gswarm.*;
-//import pso.*;
+import gui.Window;
+import javax.swing.SwingUtilities;
 
 public class Main {
 
@@ -7,11 +7,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		//PSO pso = new PSO();
-		//pso.start();
-		
-		GSwarm gswarm = new GSwarm();
-		gswarm.start();
+		new Window().setVisible(true);
 	}
 
 }
