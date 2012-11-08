@@ -26,6 +26,7 @@ public class Particle {
 	private String _dir;
 	
 	private String _bestSrc;
+	private int _bestIteration;
 	
 	private boolean _valid = true;
 
@@ -126,11 +127,12 @@ public class Particle {
 	 * 
 	 * @param _fitness 	new fitness
 	 */
-	public void setFitness(double _fitness) {
+	public void setFitness(int iteration, double _fitness) {
 		this._fitness = _fitness;
 		if (_localBestFitness < _fitness){
 			_localBestFitness = _fitness;
 			_bestSrc = _src;
+			_bestIteration = iteration;
 			
 			// save location of best fitness
 			for (int i = 0; i < _dimensions; i++){
@@ -203,6 +205,10 @@ public class Particle {
 	
 	public String getBestSrc() {
 		return _bestSrc;
+	}
+	
+	public int getBestIteration() {
+		return _bestIteration;
 	}
 
 	public boolean isValid() {

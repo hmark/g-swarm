@@ -143,7 +143,7 @@ public class PSO {
 				fitness = 0;
 			
 			particle.setDistance(absDistance);
-			particle.setFitness(fitness);
+			particle.setFitness(i, fitness);
 		}
 	}
 	
