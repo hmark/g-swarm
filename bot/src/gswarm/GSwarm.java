@@ -115,11 +115,11 @@ public class GSwarm extends PSO implements Runnable {
 		}
 		
 		String log = "Iteration #" + iter;
-		log += "gbest: " + gbest.getName() + "(from iteration " + gbest.getBestIteration() + ")";
-		log += "actual max: " + actualMax + "(" + particleActualMax.getName() + ")";
+		log += "gbest: " + gbest.getName() + "(from iteration " + gbest.getBestIteration() + ")\n";
+		log += "actual max: " + actualMax + "(" + particleActualMax.getName() + ")\n";
 		
-		log += "lbest mean: " + Math.floor(lbestMean / validParticlesNum) + " (only valid particles are counted)";
-		log += "actual mean: " + Math.floor(actualMean / validParticlesNum) + " (only valid particles are counted)";
+		log += "lbest mean: " + Math.floor(lbestMean / validParticlesNum) + " (only valid particles are counted)\n";
+		log += "actual mean: " + Math.floor(actualMean / validParticlesNum) + " (only valid particles are counted)\n";
 		
 		FileUtils.saveStringToFile(logPath, log);
 	}
@@ -132,13 +132,13 @@ public class GSwarm extends PSO implements Runnable {
 			velocities += particle.getVelocityValueAt(i) + " ";
 		}
 		
-		String log = "Particle #" + particle.getId();
-		log += "lbest: " + particle.getLocalBestFitness();
-		log += "fitness: " + particle.getFitness();
-		log += "treesize: " + particle.getTreeSize();
-		log += "locations: \n" + locations;
-		log += "velocities: \n" + velocities;
+		String log = "Particle #" + particle.getId() + "\n";
+		log += "lbest: " + particle.getLocalBestFitness() + "\n";
+		log += "fitness: " + particle.getFitness() + "\n";
+		log += "treesize: " + particle.getTreeSize() + "\n\n";
+		log += "locations: \n" + locations + "\n\n";
+		log += "velocities: \n" + velocities + "\n";
 		
-		FileUtils.saveStringToFile(particle.getDir() + "result.rsl", log);
+		FileUtils.saveStringToFile(particle.getDir() + "data.log", log);
 	}
 }

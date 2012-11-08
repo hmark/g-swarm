@@ -395,9 +395,9 @@ public class Window extends JFrame {
 		scoresTextArea.setEditable(false);
 		
 		propsTextArea = new JTextArea();
+		propsTextArea.setLineWrap(true);
 		scrollPane_4.setViewportView(propsTextArea);
 		propsTextArea.setBorder(new LineBorder(new Color(0, 0, 0)));
-		propsTextArea.setLineWrap(true);
 		propsTextArea.setFont(new Font("Courier New", Font.PLAIN, 12));
 		propsTextArea.setEditable(false);
 		
@@ -478,6 +478,12 @@ public class Window extends JFrame {
 				iterationsListModel.addElement(listOfFiles[i].getName());
 		
 		itersLabel.setText("Tests (" + listOfFiles.length + ")");
+		propsTextArea.setText("");
+		propsTextArea.setCaretPosition(0);
+		scoresTextArea.setText("");
+		scoresTextArea.setCaretPosition(0);
+		sourceTextArea.setText("");
+		sourceTextArea.setCaretPosition(0);
 	}
 	
 	public void openIteration(int index){
@@ -495,6 +501,14 @@ public class Window extends JFrame {
 				particlesListModel.addElement(listOfFiles[i].getName());
 		
 		particlesLabel.setText("Tests (" + listOfFiles.length + ")");
+		
+		String propText = FileUtils.convertFileToString(folderName + "/logs/data.log");
+		propsTextArea.setText(propText);
+		propsTextArea.setCaretPosition(0);
+		scoresTextArea.setText("");
+		scoresTextArea.setCaretPosition(0);
+		sourceTextArea.setText("");
+		sourceTextArea.setCaretPosition(0);
 	}
 	
 	public void openParticle(int index){
@@ -507,15 +521,17 @@ public class Window extends JFrame {
 		
 		sourceTextArea.removeAll();
 		
-		String propText = "NAME: " + folderName + "\n"; 
-		propText += "ITERATION: " + iterationsListModel.get(iterationSelectedIndex) + "\n";
+		String propText = FileUtils.convertFileToString(folderName + "/data.log");
 		propsTextArea.setText(propText);
+		propsTextArea.setCaretPosition(0);
 		
 		String scoresText = FileUtils.convertFileToString(folderName + "/result.rsl");
 		scoresTextArea.setText(scoresText);
+		scoresTextArea.setCaretPosition(0);
 		
 		String sourceText = FileUtils.convertFileToString(folderName + "/GSwarmRobot" + particleId + ".java");
 		sourceTextArea.setText(sourceText);
+		sourceTextArea.setCaretPosition(0);
 	}
 	
 	public int getParticlesNum(){
