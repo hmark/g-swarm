@@ -7,14 +7,14 @@ import pso.Setup;
 import utils.DateUtils;
 import external.*;
 
-public class GSwarm extends PSO {
+public class GSwarm extends PSO implements Runnable {
 	
 	private String _filePrefix = "test/test" + DateUtils.getCurrentDateTime("yyyy-MM-dd-HH-mm-ss") + "/";
 
 	public GSwarm(){
 	}
 	
-	public void start(){
+	public void run(){
 		generateInitialSwarm();
 		
 		Particle particle;
@@ -44,7 +44,7 @@ public class GSwarm extends PSO {
 					particle.setFitness(0);
 			}
 			
-			PSOLogger.logGSwarmIteration(_filePrefix, i, _swarm);
+			//PSOLogger.logGSwarmIteration(_filePrefix, i, _swarm);
 			
 			executeIteration(i);
 		}
