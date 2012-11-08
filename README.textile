@@ -1,0 +1,48 @@
+h1. G-Swarm
+
+Framework for generating Robocode robots based on Grammatical Swarm
+Author:	Marek Hlaváč
+
+h2. Changelog
+
+v0.3 (08.11.2012)
+OK - thread-based paralelization of computation (robocode battle bottleneck issue)
+OK - thread performance experiments
+OK - gui (solution lists, source and stats preview)
+
+v0.2 (31.10.2012)
+OK - robocode platform synchronization
+OK - simple battle configuration
+OK - simple fitness calculator (based on battle results against one weak robot)
+OK - grammar without terminal actions (all relevant action should be static in bot template)
+
+v0.1 (24.10.2012)
+OK - project architecture
+OK - PSO implementation
+OK - robots grammar support
+OK - grammatical swarm implementation (without external fitness calculation)
+
+h2. Future development
+
+v0.4 (TODO - 14.11.2012)
+open robocode battle from gui (for specified particle source)
+testing against set of robots
+CLI options parser (-p <number of particles> ...)
+
+v0.5 (TODO - 21.11.2012)
+docs - 1st version
+simple charts for mean and best values
+
+v0.6 (TODO - 28.11.2012)
+docs - 2nd version
+
+v0.7 (TODO - 05.12.2012)
+docs - final version
+
+v0.8 (TODO - 12.12.2012)
+simple distributed computing algorithm (master-slave for 2 computers)
+
+BACKLOG
+tournament measurement
+code refactoring
+PSO library experiments
