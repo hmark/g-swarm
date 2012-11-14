@@ -130,7 +130,8 @@ public class GSwarm extends PSO implements Runnable {
 		log += "lbest mean: " + Math.floor(lbestMean / Setup.PARTICLES) + "\n";
 		log += "actual mean: " + Math.floor(actualMean / validParticlesNum) + " (only valid particles are counted)\n";
 		
-		log += "invalid particles: " + validParticlesNum + "\n";
+		log += "valid particles: " + validParticlesNum + "\n";
+		log += "invalid particles: " + (Setup.PARTICLES - validParticlesNum) + "\n";
 		
 		FileUtils.saveStringToFile(logPath, log);
 	}
