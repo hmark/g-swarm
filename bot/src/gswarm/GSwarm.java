@@ -1,6 +1,5 @@
 package gswarm;
 
-import log.PSOLogger;
 import pso.PSO;
 import pso.Particle;
 import pso.Setup;
@@ -12,6 +11,9 @@ import gui.Window;
 public class GSwarm extends PSO implements Runnable {
 	
 	private String _filePrefix = "test/test" + DateUtils.getCurrentDateTime("yyyy-MM-dd-HH-mm-ss") + "/";
+	private GSwarmRobotGenerator _robotGen = new GSwarmRobotGenerator("conf/bot.tmpl");
+	
+	private int _iter;
 
 	public GSwarm(){
 	}
@@ -19,47 +21,62 @@ public class GSwarm extends PSO implements Runnable {
 	public void run(){
 		generateInitialSwarm();
 		
-		Particle particle;
-		GSwarmRobotGenerator robotGen = new GSwarmRobotGenerator("conf/bot.tmpl");
-		int result;
-		
 		for (int i = 0; i < Setup.ITERATIONS; i++){
+			_iter = i;
+			generateRobots();
 			
-			for (int j = 0; j < Setup.PARTICLES; j++){
-				particle = _swarm.getParticleAt(j);
-				
-				setParticleId(particle, i, j);
-				
-				robotGen.generateRobot(particle);
-			}
+			testRobots();
 			
-			RobotTester.startTest(Setup.PARTICLES, i, _filePrefix);
+			calculateFitness();
+			updateGlobalFitness();
+			updateVelocities(_iter);
 			
-			for (int j = 0; j < Setup.PARTICLES; j++){
-				particle = _swarm.getParticleAt(j);
-				
-				if (particle.isValid()){
-					result = RobotTester.loadTotalScore(particle);
-					particle.setFitness(i, result);
-					logParticle(particle);
-				}
-				else
-					particle.setFitness(i, 0);
-			}
+			logIteration();
 			
-			executeIteration(i);
-			logIteration(i);
+			updateLocations();
 			
 			Window.getInstance().update();
 		}
 	}
 	
-	private void setParticleId(Particle particle, int iter, int pos){
+	protected void generateRobots(){
+		Particle particle;
+		
+		for (int j = 0; j < Setup.PARTICLES; j++){
+			particle = _swarm.getParticleAt(j);
+			
+			setParticleId(particle, j);
+			
+			_robotGen.generateRobot(particle);
+		}
+	}
+	
+	protected void testRobots(){
+		RobotTester.startTest(Setup.PARTICLES, _iter, _filePrefix);
+	}
+	
+	protected void calculateFitness(){
+		Particle particle;
+		int result;
+		
+		for (int j = 0; j < Setup.PARTICLES; j++){
+			particle = _swarm.getParticleAt(j);
+			
+			if (particle.isValid()){
+				result = RobotTester.loadTotalScore(particle);
+				particle.setFitness(_iter, result);
+			}
+			else
+				particle.setFitness(_iter, 0);
+		}
+	} 
+	
+	private void setParticleId(Particle particle, int pos){
 		String name, filepath, id, dir;
 		
 		id = Integer.toString(10000 + pos);
 		name = "particle" + id;
-		dir = _filePrefix + "iter" + (10000 + iter) + "/" + name + "/";
+		dir = _filePrefix + "iter" + (10000 + _iter) + "/" + name + "/";
 		filepath = dir + "GSwarmRobot" + id + ".java";
 		
 		particle.setId(id);
@@ -68,27 +85,19 @@ public class GSwarm extends PSO implements Runnable {
 		particle.setSrc(filepath);
 	}
 	
-	public void executeIteration(int iter){
-		//calculateFitness();
-		updateGlobalFitness();
-			
-		/*if (isEarlyEnd()){
-			PSOLogger.logEarlyEnd(iter, _swarm);
-			return;
-		}*/
-			
-		updateVelocities(iter);
-		updateLocations();
-			
-		//PSOLogger.logGSwarmIteration(iter, _swarm);
-		//PSOLogger.logBestLocation(_swarm);
-		//PSOLogger.logParticleLocation(_target);		
-	}
-	
-	public void logIteration(int iter){
+	public void logIteration(){
 		Particle particle;
+		
+		// log particles
+		for (int j = 0; j < Setup.PARTICLES; j++){
+			particle = _swarm.getParticleAt(j);
+			
+			if (particle.isValid())
+				logParticle(particle);
+		}
+		
 		Particle gbest = _swarm.getGlobalBestParticle();
-		String logPath = _filePrefix + "iter" + (10000 + iter) + "/logs/data.log";
+		String logPath = _filePrefix + "iter" + (10000 + _iter) + "/logs/data.log";
 		
 		Double actualMax = 0.0;
 		Particle particleActualMax = _swarm.getParticleAt(0);
@@ -113,7 +122,7 @@ public class GSwarm extends PSO implements Runnable {
 		}
 		
 		String log = "";
-		log += "Iteration #" + iter + "\n";
+		log += "Iteration #" + _iter + "\n";
 		log += "gbest: " + gbest.getName() + " (from iteration " + gbest.getBestIteration() + ") with fitness " + gbest.getLocalBestFitness() +"\n";
 		log += "actual max: " + actualMax + "(" + particleActualMax.getName() + ")\n";
 		

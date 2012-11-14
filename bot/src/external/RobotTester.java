@@ -2,8 +2,6 @@ package external;
 
 import java.io.*;
 import java.lang.Runtime;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import pso.Particle;
 
