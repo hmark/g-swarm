@@ -118,7 +118,7 @@ public class PSO {
 	 * Fitness function calculation.
 	 * It describes the quality of particle in search space.
 	 */
-	public void calculateFitness(){
+	protected void calculateFitness(){
 		Particle particle;
 		double fitness;
 		int targetLoc, particleLoc, distance, absDistance; 
@@ -204,7 +204,7 @@ public class PSO {
 		double socialComponent;
 		double inertia;
 		
-		for (int i = 1; i < Setup.PARTICLES; i++){
+		for (int i = 0; i < Setup.PARTICLES; i++){
 			particle = _swarm.getParticleAt(i);
 			currentLocationValues = particle.getLocation();
 			localBestLocationValues = particle.getBestLocation();
@@ -250,7 +250,7 @@ public class PSO {
 		Particle particle;
 		int location;
 		
-		for (int i = 1; i < Setup.PARTICLES; i++){
+		for (int i = 0; i < Setup.PARTICLES; i++){
 			particle = _swarm.getParticleAt(i);
 			
 			for (int j = 0; j < Setup.DIMENSIONS; j++){
