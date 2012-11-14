@@ -47,7 +47,8 @@ class BattleThread(threading.Thread):
 	def __init__(self, semaphore, particle_id, robots_src_path):
 		threading.Thread.__init__(self)
 
-		self.SUCCESS_FACTOR = 60
+		self.MAX_DIFFICULTY = 6
+		self.SUCCESS_FACTOR = 600
 		self.difficulty = 1
 		self.semaphore = semaphore
 		self.particle_id = particle_id
@@ -77,21 +78,22 @@ class BattleThread(threading.Thread):
 		with open(self.RESULT_PATH) as f:
 		    lines = f.readlines()
 
-		regex = re.compile(r"[0-9]*%")
+		# regex = re.compile(r"[0-9]*%") # percentual score
+		regex = re.compile(r"\*[\t][0-9]*") # raw score
 
 		# log battle result to battle.log file
 		with open(self.BATTLE_LOG_PATH, "a") as f:
-			f.write(lines[2].replace("	", " "))
-			f.write(lines[3].replace("	", " "))
+			f.write(lines[2])
+			f.write(lines[3])
 			f.write("\n")
 
 		for line in lines:
 			if re.search(r"GSwarmRobot", line):
-				result = int(re.findall(regex, line)[0][:-1])
+				result = int(re.findall(regex, line)[0][2:])
 				return result
 
 	def updateScore(self):
-		self.total += self.getBattleResult()		
+		self.total += self.getBattleResult() * self.difficulty	
 
 	def isRobotSuccesful(self):
 		return self.total // self.difficulty >= self.SUCCESS_FACTOR
@@ -111,7 +113,7 @@ class BattleThread(threading.Thread):
 				self.startBattle()
 				self.updateScore()
 
-				if self.difficulty < 5 and self.isRobotSuccesful():
+				if self.difficulty < self.MAX_DIFFICULTY and self.isRobotSuccesful():
 					self.difficulty += 1
 					self.updateBattleConfig()
 				else:
@@ -120,8 +122,8 @@ class BattleThread(threading.Thread):
 
 			logger.write("battle semaphore released" + self.particle_id)
 			self.semaphore.release()
-		except IOError as e:
-			logger.write("BattleThread I/O error({0}): {1}".format(e.errno, e.strerror))
+		except Exception as e:
+			logger.write(str(e))
 
 #### SCRIPT START ####
 
