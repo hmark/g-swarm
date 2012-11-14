@@ -39,15 +39,13 @@ public class GSwarm extends PSO implements Runnable {
 				particle = _swarm.getParticleAt(j);
 				
 				if (particle.isValid()){
-					result = RobotTester.loadResult(particle.getDir() + "result.rsl");
-					logParticle(particle);
+					result = RobotTester.loadTotalScore(particle);
 					particle.setFitness(i, result);
+					logParticle(particle);
 				}
 				else
 					particle.setFitness(i, 0);
 			}
-			
-			//PSOLogger.logGSwarmIteration(_filePrefix, i, _swarm);
 			
 			executeIteration(i);
 			logIteration(i);
@@ -93,7 +91,7 @@ public class GSwarm extends PSO implements Runnable {
 		String logPath = _filePrefix + "iter" + (10000 + iter) + "/logs/data.log";
 		
 		Double actualMax = 0.0;
-		Particle particleActualMax = null;
+		Particle particleActualMax = _swarm.getParticleAt(0);
 		Double lbestMean = 0.0;
 		Double actualMean = 0.0;
 		int validParticlesNum = 0;
@@ -114,8 +112,9 @@ public class GSwarm extends PSO implements Runnable {
 			}
 		}
 		
-		String log = "Iteration #" + iter;
-		log += "gbest: " + gbest.getName() + "(from iteration " + gbest.getBestIteration() + ")\n";
+		String log = "";
+		log += "Iteration #" + iter + "\n";
+		log += "gbest: " + gbest.getName() + " (from iteration " + gbest.getBestIteration() + ") with fitness " + gbest.getLocalBestFitness() +"\n";
 		log += "actual max: " + actualMax + "(" + particleActualMax.getName() + ")\n";
 		
 		log += "lbest mean: " + Math.floor(lbestMean / validParticlesNum) + " (only valid particles are counted)\n";

@@ -525,7 +525,7 @@ public class Window extends JFrame {
 		propsTextArea.setText(propText);
 		propsTextArea.setCaretPosition(0);
 		
-		String scoresText = FileUtils.convertFileToString(folderName + "/result.rsl");
+		String scoresText = FileUtils.convertFileToString(folderName + "/battle.log");
 		scoresTextArea.setText(scoresText);
 		scoresTextArea.setCaretPosition(0);
 		

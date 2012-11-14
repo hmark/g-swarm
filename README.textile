@@ -28,8 +28,8 @@ grammatical swarm implementation (without external fitness calculation)
 h2. Future development
 
 v0.4 (TODO - 14.11.2012)
+OK - testing against set of robots
 open robocode battle from gui (for specified particle source)
-testing against set of robots
 CLI options parser (-p <number of particles> ...)
 
 v0.5 (TODO - 21.11.2012)
@@ -46,6 +46,7 @@ v0.8 (TODO - 12.12.2012)
 simple distributed computing algorithm (master-slave for 2 computers)
 
 BACKLOG
+configurable list of enemy robots to gui
 tournament measurement
 code refactoring
 PSO library experiments

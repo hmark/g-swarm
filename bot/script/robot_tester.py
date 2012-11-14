@@ -1,3 +1,4 @@
+import re
 import os
 import shutil
 import subprocess
@@ -46,11 +47,17 @@ class BattleThread(threading.Thread):
 	def __init__(self, semaphore, particle_id, robots_src_path):
 		threading.Thread.__init__(self)
 
+		self.SUCCESS_FACTOR = 60
+		self.difficulty = 1
 		self.semaphore = semaphore
 		self.particle_id = particle_id
 		self.robots_src_path = robots_src_path
 		self.ROBOCODE_PATH = "C:/robocode"
-		self.BATTLE_CONFIG_PATH = self.ROBOCODE_PATH + "/battles/gswarm.battle"
+		self.updateBattleConfig()
+		self.total = 0
+
+	def updateBattleConfig(self):
+		self.BATTLE_CONFIG_PATH = self.ROBOCODE_PATH + "/battles/gswarm/gswarm" + self.particle_id + "_" + str(self.difficulty) + ".battle"
 
 	def copyRobot(self):
 		src_path = self.robots_src_path + "/particle" + self.particle_id + "/gswarm/GSwarmRobot" + self.particle_id + ".class"
@@ -59,18 +66,60 @@ class BattleThread(threading.Thread):
 		
 	def startBattle(self):
 		fh = open("NUL","w")
-		result_path = self.robots_src_path + "/particle" + self.particle_id + "/result.rsl"
-		self.semaphore.acquire()
-		logger.write("battle semaphore acquired " + self.particle_id)
-		subprocess.call("java -DPARALLEL=true -Xmx512M -Dsun.io.useCanonCaches=false -cp %s/libs/robocode.jar robocode.Robocode -cwd %s -battle %s -nodisplay -results %s" % (self.ROBOCODE_PATH, self.ROBOCODE_PATH, self.BATTLE_CONFIG_PATH, result_path), stdout = fh, stderr = fh)
-		logger.write("battle semaphore released" + self.particle_id)
-		self.semaphore.release()
+		self.RESULT_PATH = self.robots_src_path + "/particle" + self.particle_id + "/result" + str(self.difficulty) + ".rsl"
+		self.BATTLE_LOG_PATH = self.robots_src_path + "/particle" + self.particle_id + "/battle.log"
+		command = "java -DPARALLEL=true -Xmx512M -Dsun.io.useCanonCaches=false -cp %s/libs/robocode.jar robocode.Robocode -cwd %s -battle %s -nodisplay -results %s" % (self.ROBOCODE_PATH, self.ROBOCODE_PATH, self.BATTLE_CONFIG_PATH, self.RESULT_PATH)
+		#logger.write("start battle command: " + command)
+		subprocess.call(command, stdout = fh, stderr = fh)
 		fh.close()
 
+	def getBattleResult(self):
+		with open(self.RESULT_PATH) as f:
+		    lines = f.readlines()
+
+		regex = re.compile(r"[0-9]*%")
+
+		# log battle result to battle.log file
+		with open(self.BATTLE_LOG_PATH, "a") as f:
+			f.write(lines[2].replace("	", " "))
+			f.write(lines[3].replace("	", " "))
+			f.write("\n")
+
+		for line in lines:
+			if re.search(r"GSwarmRobot", line):
+				result = int(re.findall(regex, line)[0][:-1])
+				return result
+
+	def updateScore(self):
+		self.total += self.getBattleResult()		
+
+	def isRobotSuccesful(self):
+		return self.total // self.difficulty >= self.SUCCESS_FACTOR
+
+	def outputTotalScore(self):
+		result_path = self.robots_src_path + "/particle" + self.particle_id + "/score.log"
+		f = open(result_path, "w")
+		f.write(str(self.total) + "\n")
+	
 	def run(self):
 		try:
-			self.copyRobot()
-			self.startBattle()
+			self.semaphore.acquire()
+			logger.write("battle semaphore acquired " + self.particle_id)
+
+			while True:
+				self.copyRobot()
+				self.startBattle()
+				self.updateScore()
+
+				if self.difficulty < 5 and self.isRobotSuccesful():
+					self.difficulty += 1
+					self.updateBattleConfig()
+				else:
+					self.outputTotalScore()
+					break
+
+			logger.write("battle semaphore released" + self.particle_id)
+			self.semaphore.release()
 		except IOError as e:
 			logger.write("BattleThread I/O error({0}): {1}".format(e.errno, e.strerror))
 
@@ -98,27 +147,37 @@ COMPILATION_SEMAS = 25
 TEST_SEMAS = 10
 
 # compile robots
-sema = threading.Semaphore(COMPILATION_SEMAS)
-threads = []
-start_time = time()
-for i in range(0, PARTICLES):
-	t = CompilationThread(sema, transToParticleId(i), ROBOTS_SRC_PATH)
-	threads.append(t)
+try:
+	sema = threading.Semaphore(COMPILATION_SEMAS)
+	threads = []
+	start_time = time()
+	for i in range(0, PARTICLES):
+		t = CompilationThread(sema, transToParticleId(i), ROBOTS_SRC_PATH)
+		threads.append(t)
 
-[t.start() for t in threads]
-[t.join() for t in threads]
+	[t.start() for t in threads]
+	[t.join() for t in threads]
+
+except Exception as e:
+	logger.write("Compilation Error!")
+	logger.write(str(e))
 
 logger.write("Compilation time: " + str(time() - start_time))
 
 # test robots
-sema = threading.Semaphore(TEST_SEMAS)
-threads = []
-start_time = time()
-for i in range(0, PARTICLES):
-	t = BattleThread(sema, transToParticleId(i), ROBOTS_SRC_PATH)
-	threads.append(t)
+try:
+	sema = threading.Semaphore(TEST_SEMAS)
+	threads = []
+	start_time = time()
+	for i in range(0, PARTICLES):
+		t = BattleThread(sema, transToParticleId(i), ROBOTS_SRC_PATH)
+		threads.append(t)
 
-[t.start() for t in threads]
-[t.join() for t in threads]
+	[t.start() for t in threads]
+	[t.join() for t in threads]
+
+except Exception as e:
+	logger.write("Testing Error!")
+	logger.write(str(e))
 
 logger.write("Test time: " + str(time() - start_time))
