@@ -130,13 +130,13 @@ public class Window extends JFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
-		testsLabel = new JLabel("Tests (0)");
+		testsLabel = new JLabel("Tests");
 		testsLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
-		itersLabel = new JLabel("Iterations (0)");
+		itersLabel = new JLabel("Iterations");
 		itersLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
-		particlesLabel = new JLabel("Particles (0)");
+		particlesLabel = new JLabel("Particles");
 		particlesLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -458,8 +458,6 @@ public class Window extends JFrame {
 		for (int i = 0; i < listOfFiles.length; i++)
 			if (listOfFiles[i].isDirectory())
 				testsListModel.addElement(listOfFiles[i].getName());
-		
-		testsLabel.setText("Tests (" + listOfFiles.length + ")");
 	}
 	
 	public void openTest(int index){
@@ -477,7 +475,6 @@ public class Window extends JFrame {
 			if (listOfFiles[i].isDirectory())
 				iterationsListModel.addElement(listOfFiles[i].getName());
 		
-		itersLabel.setText("Tests (" + listOfFiles.length + ")");
 		propsTextArea.setText("");
 		propsTextArea.setCaretPosition(0);
 		scoresTextArea.setText("");
@@ -499,8 +496,6 @@ public class Window extends JFrame {
 		for (int i = 0; i < listOfFiles.length; i++)
 			if (listOfFiles[i].isDirectory() && !listOfFiles[i].getName().equals("logs"))
 				particlesListModel.addElement(listOfFiles[i].getName());
-		
-		particlesLabel.setText("Tests (" + listOfFiles.length + ")");
 		
 		String propText = FileUtils.convertFileToString(folderName + "/logs/data.log");
 		propsTextArea.setText(propText);
