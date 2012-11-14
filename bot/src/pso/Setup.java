@@ -13,7 +13,7 @@ public class Setup {
 	/**
 	 * Number of particles in swarm.
 	 */
-	public static int PARTICLES = 50;
+	public static int PARTICLES = 30;
 	
 	/**
 	 * Dimensions number of search space.
@@ -37,12 +37,12 @@ public class Setup {
 	/**
 	 * Minimum speed of particle for dimension.
 	 */
-	public static int SPEED_MIN = -32;
+	public static int SPEED_MIN = -128;
 	
 	/**
 	 * Maximum speed of particle for dimension.
 	 */
-	public static int SPEED_MAX = 32;
+	public static int SPEED_MAX = 128;
 	
 	// PSO velocity update coefficients
 	
@@ -59,19 +59,19 @@ public class Setup {
 	/**
 	 * Minimum inertia weight coefficient.
 	 */
-	public static double WMIN = 0;
+	public static double WMIN = 0.4;
 	
 	/**
 	 * Starting inertia weight coefficient.
 	 */
-	public static double WMAX = 1.0;
+	public static double WMAX = 0.9;
 	
 	// PSO stop condition limits
 	
 	/**
 	 * Iterations number of particle swarm algorithm.
 	 */
-	public static int ITERATIONS = 10000;
+	public static int ITERATIONS = 1000;
 	
 	/**
 	 * Fitness tolerance of acceptable solution.
