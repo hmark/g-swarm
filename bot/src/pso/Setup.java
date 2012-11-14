@@ -37,12 +37,12 @@ public class Setup {
 	/**
 	 * Minimum speed of particle for dimension.
 	 */
-	public static int SPEED_MIN = -128;
+	public static int SPEED_MIN = -32;
 	
 	/**
 	 * Maximum speed of particle for dimension.
 	 */
-	public static int SPEED_MAX = 128;
+	public static int SPEED_MAX = 32;
 	
 	// PSO velocity update coefficients
 	
