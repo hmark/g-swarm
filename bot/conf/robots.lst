@@ -1,5 +1,6 @@
 sample.Target
 sample.MyFirstRobot
-test.Rumbler
 sample.Crazy
+test.Rumbler*
 sample.Tracker
+sample.Walls
