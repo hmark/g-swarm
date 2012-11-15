@@ -1,0 +1,49 @@
+Rumbler (29.10.2012)
+- swarm size 100
+- dimensions 100
+- max.position 255
+- min./max.velocity 64
+- found in iteration 37
+- coefficients 1.0
+- weights 0.1->0.0
+- treesize 6
+- fitness (based on percentual score)
+- enemies (MyFirstRobot)
+- info (kazdym scanom sa natoci smerom k nepriatelovi a posunie sa maly kusok vpred, v pripade zamerania nepriatela striela a posuva sa k nemu)
+- algorithm g-swarm without condition rules based on GP-Bot grammar and generation mechanism
+- problems (small decision tree)
+
+Rusher (15.11.2012)
+- swarm size 30
+- dimensions 100
+- max.position 255
+- min./max.velocity 32
+- found in iteration 88
+- coefficients 1.0
+- weights 0.9->0.4
+- treesize 59
+- fitness (based on total score with bigger linear coefficients for difficult enemies)
+- enemies (Target, MyFirstRobot, Rumbler, Crazy, Tracker, Walls)
+- info (kazdym scanom sa natoci smerom k nepriatelovi a posunie sa uplne k stene, v pripade zamerania nepriatela striela a posuva sa k nemu)
+- algorithm g-swarm based on GP-Bot grammar and generation mechanism
+- problems (big tree in one of 3 actions)
+
+STATISTICS PER 1000 BATTLES
+
+			MyFirstRobot	RamFire			Crazy			Tracker			VelociRobot		Fire 			SpinBot
+Rumbler		957vs43 WIN		437vs563 TIE 	358vs642 LOST	244vs756 LOST	485vs515 TIE 	90vs910 LOST	318vs682 LOST
+Rusher		632vs368 WIN 	610vs390 WIN	451vs549 TIE 	449vs551 TIE 	457vs543 TIE 	327vs673 LOST	296vs704 LOST
+
+			Walls 			TrackFire		GP-Bot			GeneticBot		Shadow			Total(W/L)
+Rumbler		9v991 LOST 		5vs995 LOST		19vs981 LOST 	0vs1000 LOST	0vs1000 LOST 	2922/9078 = 24% winning rate
+Rusher		68vs932 LOST 	1vs999 LOST		68vs932 LOST 	0vs1000 LOST	0vs1000 LOST 	3359/8641 = 28% winning rate
+
+			Rumbler			Rusher
+Rumbler		-				385vs615 LOST
+Rusher		615vs385 WIN	-
+
+
+#
+# GuessFactor, Peryton, SquigBot, Sparrow, Duelist, Cannibal, Tron, Aspid, Cigaret
+#
+#
