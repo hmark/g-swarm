@@ -5,6 +5,11 @@ Author:	Marek Hlaváč
 
 h2. Changelog
 
+h3. v0.4 (15.11.2012)
+
+OK - testing against set of robots
+OK - add difficulty coefficients for enemy robots
+
 h3. v0.3 (08.11.2012)
 
 thread-based paralelization of computation (robocode battle bottleneck issue)
@@ -27,14 +32,9 @@ grammatical swarm implementation (without external fitness calculation)
 
 h2. Future development
 
-v0.4 (TODO - 14.11.2012)
-OK - testing against set of robots
-open robocode battle from gui (for specified particle source)
-CLI options parser (-p <number of particles> ...)
-
 v0.5 (TODO - 21.11.2012)
-docs - 1st version
 simple charts for mean and best values
+docs - 1st version
 
 v0.6 (TODO - 28.11.2012)
 docs - 2nd version
@@ -42,10 +42,10 @@ docs - 2nd version
 v0.7 (TODO - 05.12.2012)
 docs - final version
 
-v0.8 (TODO - 12.12.2012)
-simple distributed computing algorithm (master-slave for 2 computers)
-
 BACKLOG
+open robocode battle from gui (for specified particle source)
+distributed computing algorithm (master-slave for 2 computers)
+CLI options parser (-p <number of particles> ...)
 configurable list of enemy robots to gui
 tournament measurement
 code refactoring
