@@ -7,8 +7,8 @@ h2. Changelog
 
 h3. v0.4 (15.11.2012)
 
-OK - testing against set of robots
-OK - add difficulty coefficients for enemy robots
+testing against set of enemy robots
+difficulty coefficients for enemy robots
 
 h3. v0.3 (08.11.2012)
 
@@ -33,10 +33,11 @@ grammatical swarm implementation (without external fitness calculation)
 h2. Future development
 
 v0.5 (TODO - 21.11.2012)
-simple charts for mean and best values
+parallel pso solution
 docs - 1st version
 
 v0.6 (TODO - 28.11.2012)
+simple charts export
 docs - 2nd version
 
 v0.7 (TODO - 05.12.2012)
