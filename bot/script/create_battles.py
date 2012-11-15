@@ -21,7 +21,7 @@ def createBattleFile(enemy, level, id):
 with open(ENEMIES_PATH) as f:
     enemies = f.readlines()
 
-enemies = [enemy.strip() for enemy in enemies]
+enemies = [enemy.split(" ")[1] for enemy in enemies]
 level = 0
 
 for enemy in enemies:
