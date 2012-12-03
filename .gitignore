@@ -3,6 +3,7 @@
 #################
 
 bot/test/
+cd
 
 *.pydevproject
 .project
