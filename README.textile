@@ -32,18 +32,12 @@ grammatical swarm implementation (without external fitness calculation)
 
 h2. Future development
 
-v0.5 (TODO - 21.11.2012)
-parallel pso solution
-docs - 1st version
-
-v0.6 (TODO - 28.11.2012)
-simple charts export
-docs - 2nd version
-
-v0.7 (TODO - 05.12.2012)
-docs - final version
+v0.5
+docs
 
 BACKLOG
+! parallel pso solution !
+! simple charts export !
 open robocode battle from gui (for specified particle source)
 distributed computing algorithm (master-slave for 2 computers)
 CLI options parser (-p <number of particles> ...)
