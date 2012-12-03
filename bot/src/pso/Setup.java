@@ -11,7 +11,7 @@ public class Setup {
 	// PSO size properties
 
 	/**
-	 * Number of particles in swarm.
+	 * Number of particles in swarm
 	 */
 	public static int PARTICLES = 30;
 	
