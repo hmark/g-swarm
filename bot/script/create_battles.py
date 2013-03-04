@@ -1,15 +1,32 @@
 import os
 import shutil
 
-ENEMIES_PATH = "C:/Users/h/Workspace/_github/g-swarm/bot/conf/robots.lst"
-TEMPLATE_PATH = "C:/Users/h/Workspace/_github/g-swarm/bot/conf/battle/gswarm.battle"
-TARGET_DIR = "C:/Robocode/battles/gswarm/"
+ENEMIES_PATH = ""
+TEMPLATE_PATH = ""
+ROBOCODE_PATH = ""
+
+
+def loadPaths():
+    global TEMPLATE_PATH, ENEMIES_PATH, ROBOCODE_PATH
+
+    with open(os.path.dirname(__file__) + "/../conf/path.conf") as f:
+        paths = f.readlines()
+        paths = [path.strip().replace("\"", "") for path in paths]
+
+    for path in paths:
+        p = path.split("=")
+        if p[0] == "BATTLE_TEMPLATE":
+            TEMPLATE_PATH = p[1]
+        elif p[0] == "ROBOCODE":
+            ROBOCODE_PATH = p[1]
+        elif p[0] == "ENEMY_LIST":
+            ENEMIES_PATH = p[1]
 
 
 def createBattleFile(enemy, level, id):
     battle_name = "gswarm" + id + "_" + level + ".battle"
     robot_name = "gswarm.GSwarmRobot" + id
-    target_path = TARGET_DIR + battle_name
+    target_path = ROBOCODE_PATH + "/battles/gswarm/" + battle_name
     shutil.copyfile(TEMPLATE_PATH, target_path + "_")
 
     # replace #ROBOT# string in target battle config
@@ -18,6 +35,8 @@ def createBattleFile(enemy, level, id):
             out.write(line.replace('#ENEMY#', enemy).replace('#ROBOT#', robot_name))
 
     os.remove(target_path + "_")
+
+loadPaths()
 
 with open(ENEMIES_PATH) as f:
     enemies = f.readlines()
