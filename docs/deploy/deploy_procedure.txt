@@ -1,0 +1,8 @@
+1. build JAR file
+2. copy workspace (script, conf and empty test directories) and robocode to USB
+3. download JAVA JDK 7, Python3.2 and add them to USB
+4. install JAVA and PYTHON
+5. add python path to PATH (environment variables)
+6. set correct paths in $WORKSPACE$/conf/path.conf
+7. execute $WORKSPACE$/script/create_battles.py (is it working ?)
+8. run java -jar $WORKSPACE$/g-swarm.jar and run simulation with 2 iterations for 2 swarm size (is it working ?)
