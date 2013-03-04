@@ -78,6 +78,13 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 			FileUtils.saveStringToFile(particle.getSrc(), body);
 		}
 		//JavaRobotCompiler.compileRobot(path);
-	}	
+	}
+	
+	public String translateParticleToProgram(Particle particle){
+		GSwarmBehaviorGenerator program = _gSwarmPrograms.get(0);
+		program.loadGrammar();
+		program.generateBody(particle, 0);
+		return program.getBody();
+	}
 
 }
