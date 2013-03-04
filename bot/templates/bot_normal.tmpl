@@ -1,0 +1,20 @@
+package gswarm;
+
+import robocode.AdvancedRobot;
+import robocode.ScannedRobotEvent;
+
+public class GSwarmRobot#ROBOTCLASS# extends AdvancedRobot {
+
+	public void run() {
+		while (true) {
+			turnRadarLeft(360);
+		}
+	}
+
+	public void onScannedRobot(ScannedRobotEvent e) {
+		ahead(#gswarm-simple.grm);
+		turnLeft(robocode.util.Utils.normalRelativeAngleDegrees((- e.getBearing())));
+		turnGunLeft(robocode.util.Utils.normalRelativeAngleDegrees(((Math.abs(((getY() > e.getBearing()) ? (Math.sin(Math.abs(getY()))) : (e.getBearing()))) > 0) ? (((fireBullet(((e.getDistance() + e.getEnergy()) + e.getBearing()))==null) ? 0.0 : 0.0)) : (Math.abs(((fireBullet(((getEnergy() > ((fireBullet(e.getDistance())==null) ? 0.0 : 0.0)) ? ((getY() - (getX() - ((((fireBullet(((Math.abs(getX()) > (e.getEnergy() + e.getBearing())) ? ((((fireBullet(((e.getDistance() > getEnergy()) ? (Math.abs((- e.getBearing()))) : (Math.abs(getEnergy()))))==null) ? 0.0 : 0.0) - e.getDistance())) : (e.getEnergy())))==null) ? 0.0 : 0.0) + Math.abs(e.getBearing())) - ((getX() > Math.abs(((fireBullet(getHeading())==null) ? 0.0 : 0.0))) ? (getEnergy()) : (getX())))))) : (getHeading())))==null) ? 0.0 : 0.0))))));
+	}
+
+}
