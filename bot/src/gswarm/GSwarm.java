@@ -16,6 +16,7 @@ public class GSwarm extends PSO implements Runnable {
 	private int _iter;
 
 	public GSwarm(){
+		RobotTester.loadTestScriptPath();
 	}
 	
 	public void run(){
