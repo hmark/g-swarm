@@ -156,7 +156,7 @@ if len(sys.argv) != 4:
 def loadPaths():
     global JAVAC_PATH, ROBOCODE_PATH, ENEMIES_PATH
 
-    with open(os.path.dirname(__file__) + "/../conf/path.conf") as f:
+    with open(os.path.dirname(os.path.abspath(__file__)) + "/../conf/path.conf") as f:
         paths = f.readlines()
         paths = [path.strip().replace("\"", "") for path in paths]
 
@@ -183,7 +183,7 @@ loadPaths()
 
 PARTICLES = int(sys.argv[1])
 ITER_STR = str(10000 + int(sys.argv[2]))
-ROBOTS_SRC_PATH = os.path.dirname(__file__) + "/../" + sys.argv[3] + "iter" + ITER_STR
+ROBOTS_SRC_PATH = os.path.dirname(os.path.abspath(__file__)) + "/../" + sys.argv[3] + "iter" + ITER_STR
 
 logger = Logger(ROBOTS_SRC_PATH, ITER_STR)
 enemies = getEnemies()

@@ -9,7 +9,7 @@ ROBOCODE_PATH = ""
 def loadPaths():
     global TEMPLATE_PATH, ENEMIES_PATH, ROBOCODE_PATH
 
-    with open(os.path.dirname(__file__) + "/../conf/path.conf") as f:
+    with open(os.path.dirname(os.path.abspath(__file__)) + "/../conf/path.conf") as f:
         paths = f.readlines()
         paths = [path.strip().replace("\"", "") for path in paths]
 
