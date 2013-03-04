@@ -1,8 +1,14 @@
-1 sample.RamFire 1.0 4000
-2 sample.Crazy 1.0 6000
-3 sample.Tracker 1.0 9000
-4 sample.Fire 1.0 12000
-5 sample.VelociRobot 1.0 1500
-6 sample.SpinBot 1.0 18000
-7 sample.TrackFire 1.0 21000
-8 sample.Walls 1.0 24000
+1 sample.RamFire 18
+2 sample.Crazy 18
+3 sample.Tracker 18
+4 sample.Fire 18
+5 sample.TrackFire 18
+6 sample.VelociRobot 15
+7 sample.SpinBot 12
+8 NDH.GuessFactor-1.0 5
+9 gg.Peryton1_1* 5
+10 geep.mini.GPBotA-1.0 5
+11 sample.Walls 5
+12 dummy.micro.Sparrow-2.5 5
+13 davidalves.net.DuelistMicro-1.22 5
+14 sp.Minis.geneticBot-1.0 5
