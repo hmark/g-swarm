@@ -497,7 +497,12 @@ public class Window extends JFrame {
 			if (listOfFiles[i].isDirectory() && !listOfFiles[i].getName().equals("logs"))
 				particlesListModel.addElement(listOfFiles[i].getName());
 		
-		String propText = FileUtils.convertFileToString(folderName + "/logs/data.log");
+		String propText = FileUtils.convertFileToString(folderName + "/logs/ahead_data.log");
+		propText += "\n";
+		propText += FileUtils.convertFileToString(folderName + "/logs/gun_data.log");
+		propText += "\n";
+		propText += FileUtils.convertFileToString(folderName + "/logs/turn_data.log");
+		
 		propsTextArea.setText(propText);
 		propsTextArea.setCaretPosition(0);
 		scoresTextArea.setText("");

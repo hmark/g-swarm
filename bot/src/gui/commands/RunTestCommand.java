@@ -34,7 +34,12 @@ public class RunTestCommand {
 		System.out.println("Setup.WMIN: " + Setup.WMIN);
 		System.out.println("Setup.WMAX: " + Setup.WMAX);
 		
+		/*
 		Thread t = new Thread(new GSwarm());
+		ThreadManager.addThread(t);
+		t.start();*/
+		
+		Thread t = new Thread(new ParallelGSwarm());
 		ThreadManager.addThread(t);
 		t.start();
 	}

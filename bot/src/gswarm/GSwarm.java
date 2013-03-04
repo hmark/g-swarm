@@ -10,27 +10,42 @@ import gui.Window;
 
 public class GSwarm extends PSO implements Runnable {
 	
+	public String name = "";
 	private String _filePrefix = "test/test" + DateUtils.getCurrentDateTime("yyyy-MM-dd-HH-mm-ss") + "/";
-	private GSwarmRobotGenerator _robotGen = new GSwarmRobotGenerator("conf/bot.tmpl");
+	public GSwarmRobotGenerator robotGen;
 	
-	private int _iter;
-
+	public int iteration;
+	
 	public GSwarm(){
+		init();
+	}
+
+	public GSwarm(String name){
+		this.name = name;
+		init();
+	}
+	
+	private void init(){
 		RobotTester.loadTestScriptPath();
+		loadTemplate("templates/bot_normal.tmpl");
+	}
+	
+	public void loadTemplate(String templatePath){
+		robotGen = new GSwarmRobotGenerator(templatePath);
 	}
 	
 	public void run(){
 		generateInitialSwarm();
 		
 		for (int i = 0; i < Setup.ITERATIONS; i++){
-			_iter = i;
+			iteration = i;
 			generateRobots();
 			
 			testRobots();
 			
 			calculateFitness();
 			updateGlobalFitness();
-			updateVelocities(_iter);
+			updateVelocities(iteration);
 			
 			logIteration();
 			
@@ -48,12 +63,12 @@ public class GSwarm extends PSO implements Runnable {
 			
 			setParticleId(particle, j);
 			
-			_robotGen.generateRobot(particle);
+			robotGen.generateRobot(particle);
 		}
 	}
 	
 	protected void testRobots(){
-		RobotTester.startTest(Setup.PARTICLES, _iter, _filePrefix);
+		RobotTester.startTest(Setup.PARTICLES, iteration, _filePrefix, name);
 	}
 	
 	protected void calculateFitness(){
@@ -65,24 +80,24 @@ public class GSwarm extends PSO implements Runnable {
 			
 			if (particle.isValid()){
 				result = RobotTester.loadTotalScore(particle);
-				particle.setFitness(_iter, result);
+				particle.setFitness(iteration, result);
 			}
 			else
-				particle.setFitness(_iter, 0);
+				particle.setFitness(iteration, 0);
 		}
 	} 
 	
 	private void setParticleId(Particle particle, int pos){
-		String name, filepath, id, dir;
+		String particleName, filepath, id, dir;
 		
 		id = Integer.toString(10000 + pos);
-		name = "particle" + id;
-		dir = _filePrefix + "iter" + (10000 + _iter) + "/" + name + "/";
+		particleName = "particle" + id;
+		dir = _filePrefix + "iter" + (10000 + iteration) + "/" + name + "_" + particleName + "/";
 		filepath = dir + "GSwarmRobot" + id + ".java";
 		
 		particle.setId(id);
 		particle.setDir(dir);
-		particle.setName(name);
+		particle.setName(particleName);
 		particle.setSrc(filepath);
 	}
 	
@@ -98,7 +113,7 @@ public class GSwarm extends PSO implements Runnable {
 		}
 		
 		Particle gbest = _swarm.getGlobalBestParticle();
-		String logPath = _filePrefix + "iter" + (10000 + _iter) + "/logs/data.log";
+		String logPath = _filePrefix + "iter" + (10000 + iteration) + "/logs/" + name  + "_data.log";
 		
 		Double actualMax = 0.0;
 		Particle particleActualMax = _swarm.getParticleAt(0);
@@ -124,7 +139,7 @@ public class GSwarm extends PSO implements Runnable {
 		}
 		
 		String log = "";
-		log += "Iteration #" + _iter + "\n";
+		log += "Iteration #" + iteration + "\n";
 		log += "gbest: " + gbest.getName() + " (from iteration " + gbest.getBestIteration() + ") with fitness " + gbest.getLocalBestFitness() +"\n";
 		log += "actual max: " + actualMax + " (" + particleActualMax.getName() + ")\n";
 		
