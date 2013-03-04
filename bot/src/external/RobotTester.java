@@ -23,9 +23,9 @@ public class RobotTester {
 		}
 	}
 	
-	public static void startTest(int particlesNum, int iteration, String testPath){
+	public static void startTest(int particlesNum, int iteration, String testPath, String swarmName){
 		try {
-			String command = "python " + TEST_SCRIPT_PATH + " " + particlesNum + " " + iteration + " "  + testPath;
+			String command = "python " + TEST_SCRIPT_PATH + " " + particlesNum + " " + iteration + " "  + testPath + " " + swarmName;
 			System.out.println(command);
 			Process p = Runtime.getRuntime().exec(command);
 			p.waitFor();
