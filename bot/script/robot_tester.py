@@ -11,6 +11,11 @@ JAVAC_PATH = ""
 ROBOCODE_PATH = ""
 ENEMIES_PATH = ""
 
+SWARM_NAME = ""
+
+COMPILATION_SEMAS = 30
+TEST_SEMAS = 30
+
 
 class Logger():
 
@@ -34,7 +39,7 @@ class CompilationThread(threading.Thread):
         self.robots_src_path = robots_src_path
 
     def compileRobot(self):
-        target_dir_path = self.robots_src_path + "/particle" + self.particle_id
+        target_dir_path = self.robots_src_path + "/" + SWARM_NAME + "_particle" + self.particle_id
         target_scr_path = target_dir_path + "/GSwarmRobot" + self.particle_id + ".java"
 
         if os.path.isfile(target_scr_path):
@@ -69,14 +74,14 @@ class BattleThread(threading.Thread):
         self.BATTLE_CONFIG_PATH = ROBOCODE_PATH + "/battles/gswarm/gswarm" + self.particle_id + "_" + str(self.difficulty) + ".battle"
 
     def copyRobot(self):
-        src_path = self.robots_src_path + "/particle" + self.particle_id + "/gswarm/GSwarmRobot" + self.particle_id + ".class"
+        src_path = self.robots_src_path + "/" + SWARM_NAME + "_particle" + self.particle_id + "/gswarm/GSwarmRobot" + self.particle_id + ".class"
         dest_path = ROBOCODE_PATH + "/robots/gswarm"
         shutil.copy(src_path, dest_path)
 
     def startBattle(self):
         fh = open("NUL", "w")
-        self.RESULT_PATH = self.robots_src_path + "/particle" + self.particle_id + "/result" + str(self.difficulty) + ".rsl"
-        self.BATTLE_LOG_PATH = self.robots_src_path + "/particle" + self.particle_id + "/battle.log"
+        self.RESULT_PATH = self.robots_src_path + "/" + SWARM_NAME + "_particle" + self.particle_id + "/result" + str(self.difficulty) + ".rsl"
+        self.BATTLE_LOG_PATH = self.robots_src_path + "/" + SWARM_NAME + "_particle" + self.particle_id + "/battle.log"
         start_time = time()
         command = "java -DPARALLEL=true -Xmx512M -Dsun.io.useCanonCaches=false -cp %s/libs/robocode.jar robocode.Robocode -cwd %s -battle %s -nodisplay -results %s" % (ROBOCODE_PATH, ROBOCODE_PATH, self.BATTLE_CONFIG_PATH, self.RESULT_PATH)
         subprocess.call(command, stdout=fh, stderr=fh)
@@ -113,7 +118,7 @@ class BattleThread(threading.Thread):
         return self.wins >= win_limit
 
     def outputTotalScore(self):
-        result_path = self.robots_src_path + "/particle" + self.particle_id + "/score.log"
+        result_path = self.robots_src_path + "/" + SWARM_NAME + "_particle" + self.particle_id + "/score.log"
         f = open(result_path, "w")
         f.write(str(self.total) + "\n")
 
@@ -143,13 +148,14 @@ class BattleThread(threading.Thread):
 
 #### SCRIPT START ####
 
-if len(sys.argv) != 4:
+if len(sys.argv) != 5:
     print("Incorrect number of arguments!")
     print("Usage:")
-    print("robot_tester.py <1> <2> <3>")
+    print("robot_tester.py <1> <2> <3> <4>")
     print("<1> - number of particles")
     print("<2> - iteration num")
     print("<3> - robots directory name")
+    print("<4> - swarm name")
     sys.exit()
 
 
@@ -184,12 +190,10 @@ loadPaths()
 PARTICLES = int(sys.argv[1])
 ITER_STR = str(10000 + int(sys.argv[2]))
 ROBOTS_SRC_PATH = os.path.dirname(os.path.abspath(__file__)) + "/../" + sys.argv[3] + "iter" + ITER_STR
+SWARM_NAME = str(sys.argv[4])
 
 logger = Logger(ROBOTS_SRC_PATH, ITER_STR)
 enemies = getEnemies()
-
-COMPILATION_SEMAS = 30
-TEST_SEMAS = 30
 
 # compile robots
 try:
