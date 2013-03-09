@@ -7,14 +7,14 @@ public class GSwarmRobot#ROBOTCLASS# extends AdvancedRobot {
 
 	public void run() {
 		while (true) {
-			turnRadarLeft(360);
+			turnRadarLeft(Double.POSITIVE_INFINITY);
 		}
 	}
 
 	public void onScannedRobot(ScannedRobotEvent e) {
 		ahead(#ahead#);
-		turnLeft(robocode.util.Utils.normalRelativeAngle(#turn#));
-		turnGunLeft(robocode.util.Utils.normalRelativeAngle(#gun#));
+		turnLeftRadians(robocode.util.Utils.normalRelativeAngle(#turn#));
+		turnGunLeftRadians(robocode.util.Utils.normalRelativeAngle(#gun#));
 	}
 
 }
