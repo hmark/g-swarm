@@ -26,7 +26,7 @@ class Logger():
         self.f = open(robots_src_path + "/logs/" + iter_str + ".log", "w")
 
     def write(self, text):
-        self.f.write(text + "\n")
+        self.f.write(str(text) + "\n")
 
 
 class CompilationThread(threading.Thread):
@@ -210,7 +210,6 @@ try:
 except Exception as e:
     logger.write("Compilation Error!")
     logger.write(str(e))
-    logger.write(traceback.print_exc())
 
 logger.write("Compilation time: " + str(time() - start_time))
 
