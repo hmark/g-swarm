@@ -47,5 +47,5 @@ level = 0
 
 for enemy in enemies:
     level += 1
-    for i in range(0, 99):
+    for i in range(0, 100):
         createBattleFile(enemy, str(level), str(10000 + i))
