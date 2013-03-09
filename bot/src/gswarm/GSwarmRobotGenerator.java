@@ -39,8 +39,6 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 					
 					program = new GSwarmBehaviorGenerator(key, grammarFile);
 					_gSwarmPrograms.add(program);
-					
-					//System.out.println(key + " " + grammarFile);
 				}
 			}
 		} catch (IOException e) {
@@ -61,7 +59,6 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 			program = _gSwarmPrograms.get(i);
 			program.loadGrammar();
 			lastIndex = program.generateBody(particle, lastIndex);
-			//System.out.println("last index " + lastIndex);
 			
 			body = body.replaceFirst(program.getKey(), program.getBody());
 			body = body.replaceFirst("#ROBOTCLASS#", particle.getId());
@@ -72,18 +69,18 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 			}
 		}
 		
-		//FileUtils.saveStringToFile("test/GSwarmRobot.java", body);
 		if (particle.isValid()){
 			particle.setTreeSize(lastIndex);
 			FileUtils.saveStringToFile(particle.getSrc(), body);
 		}
-		//JavaRobotCompiler.compileRobot(path);
+		else	
+			FileUtils.saveStringToFile("invalid_" + particle.getSrc(), body);
 	}
 	
-	public String translateParticleToProgram(Particle particle){
+	public String translateGlobalBestParticleToProgram(Particle particle){
 		GSwarmBehaviorGenerator program = _gSwarmPrograms.get(0);
 		program.loadGrammar();
-		program.generateBody(particle, 0);
+		program.generateBodyFromBestLocation(particle, 0);
 		return program.getBody();
 	}
 
