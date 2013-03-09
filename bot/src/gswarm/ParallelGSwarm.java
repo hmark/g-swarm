@@ -46,8 +46,6 @@ public class ParallelGSwarm implements Runnable {
 				swarm.updateVelocities(i);
 				swarm.logIteration();
 				swarm.updateLocations();
-				
-				Window.getInstance().update();
 			}
 		}
 	}
@@ -74,13 +72,22 @@ public class ParallelGSwarm implements Runnable {
 		String botTemplate = FileUtils.convertFileToString("templates/bot_module.tmpl");
 		
 		particle = swarms[0].getSwarm().getGlobalBestParticle();
-		String aheadProgram = swarms[0].robotGen.translateParticleToProgram(particle);
+		String aheadProgram = swarms[0].robotGen.translateGlobalBestParticleToProgram(particle);
+		
+		System.out.println("aheadProgram");
+		System.out.println(aheadProgram);
 		
 		particle = swarms[1].getSwarm().getGlobalBestParticle();
-		String gunProgram = swarms[1].robotGen.translateParticleToProgram(particle);
+		String gunProgram = swarms[1].robotGen.translateGlobalBestParticleToProgram(particle);
+		
+		System.out.println("gunProgram");
+		System.out.println(gunProgram);
 		
 		particle = swarms[2].getSwarm().getGlobalBestParticle();
-		String turnProgram = swarms[2].robotGen.translateParticleToProgram(particle);
+		String turnProgram = swarms[2].robotGen.translateGlobalBestParticleToProgram(particle);
+		
+		System.out.println("turnProgram");
+		System.out.println(turnProgram);
 		
 		String aheadTemplate = botTemplate.replace("#ahead#", "#gswarm-simple.grm").replace("#gun#", gunProgram).replace("#turn#", turnProgram);
 		String gunTemplate = botTemplate.replace("#ahead#", aheadProgram).replace("#gun#", "#gswarm-simple.grm").replace("#turn#", turnProgram);
