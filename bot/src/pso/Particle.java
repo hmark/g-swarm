@@ -17,7 +17,7 @@ public class Particle {
 	private int[] _bestLocationVector;
 	private int _bestDistance = 1000000;
 	
-	private double _localBestFitness = 0;
+	private double _localBestFitness = -1;
 	private double _fitness;
 	
 	private String _id;
@@ -227,6 +227,28 @@ public class Particle {
 	
 	public int getTreeSize() {
 		return _treeSize;
+	}
+	
+	public Particle duplicate(){
+		Particle particle = new Particle(_dimensions);
+		
+		for (int i = 0; i < _dimensions; i++){
+			particle.setLocationValueAt(i, _locationVector[i]);
+			particle.setVelocityValueAt(i, _velocityVector[i]);
+			particle.setFitness(_bestIteration, _fitness);
+			particle.setDistance(_distance);
+			
+			particle.setId(_id);
+			particle.setName(_name);
+			particle.setSrc(_src);
+			particle.setDir(_dir);
+			
+			particle.setValid(_valid);
+			
+			particle.setTreeSize(_treeSize);
+		}
+		
+		return particle;
 	}
 	
 }
