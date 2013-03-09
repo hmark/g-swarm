@@ -39,4 +39,33 @@ public class GSwarmBehaviorGenerator extends BehaviorGenerator {
 		
 		return vectorIndex;
 	}
+	
+	public int generateBodyFromBestLocation(Particle particle, int vectorIndex){
+		resetBody();
+		
+		String nonTerminal, expression;
+		int index, expressionsNum, derivationValue, ruleIndex;
+		int dims = Setup.DIMENSIONS;
+		Rule rule;
+			
+		while ((index = _body.indexOf("<!")) != -1){ // TODO - optimalization issue, WHILE cycle is ineffective because we are searching and replacing in two steps
+			nonTerminal = _body.substring(index, index + 6);
+			
+			rule = _grammar.getRuleByNonTerminal(nonTerminal);
+			expressionsNum = rule.getExpressionsNumber();
+			derivationValue = particle.getBestLocationValueAt(vectorIndex % dims);
+			ruleIndex = derivationValue % expressionsNum;
+			//System.out.println(derivationValue + " % " + expressionsNum + " = " + ruleIndex);
+			expression = rule.getExpressionAt(ruleIndex);
+			
+			//System.out.println("replace " + nonTerminal + " with " + expression);
+			_body = _body.substring(0, index) + expression + _body.substring(index + 6);
+			//System.out.println(_body);
+			
+			if (++vectorIndex > Setup.CONSTRAINT)
+				return -1;
+		}
+		
+		return vectorIndex;
+	}
 }
