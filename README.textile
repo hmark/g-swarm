@@ -5,6 +5,12 @@ Author:	Marek Hlaváč
 
 h2. Changelog
 
+h3. v0.6 (10.03.2013)
+
+parallel grammatical swarms
+modular generating
+win/loss based test method
+
 h3. v0.5 (06.12.2012)
 
 docs
