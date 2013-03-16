@@ -48,14 +48,15 @@ public class ParallelGSwarm implements Runnable {
 				swarm.updateLocations();
 			}
 		}
+		
 	}
 	
 	private void prepareTemplates(){
 		String botTemplate = FileUtils.convertFileToString("templates/bot_module.tmpl");
 		
-		String aheadTemplate = botTemplate.replace("#ahead#", "#gswarm-simple.grm").replace("#gun#", "0").replace("#turn#", "0");
-		String gunTemplate = botTemplate.replace("#ahead#", "0").replace("#gun#", "#gswarm-simple.grm").replace("#turn#", "0");
-		String turnTemplate = botTemplate.replace("#ahead#", "0").replace("#gun#", "0").replace("#turn#", "#gswarm-simple.grm");
+		String aheadTemplate = botTemplate.replace("#ahead#", "#gswarm-ahead.grm").replace("#gun#", "0").replace("#turn#", "0");
+		String gunTemplate = botTemplate.replace("#ahead#", "0").replace("#gun#", "#gswarm-gun.grm").replace("#turn#", "0");
+		String turnTemplate = botTemplate.replace("#ahead#", "0").replace("#gun#", "0").replace("#turn#", "#gswarm-turn.grm");
 		
 		FileUtils.saveStringToFile("templates/ahead_bot.tmpl", aheadTemplate);
 		FileUtils.saveStringToFile("templates/gun_bot.tmpl", gunTemplate);
@@ -89,9 +90,9 @@ public class ParallelGSwarm implements Runnable {
 		System.out.println("turnProgram");
 		System.out.println(turnProgram);
 		
-		String aheadTemplate = botTemplate.replace("#ahead#", "#gswarm-simple.grm").replace("#gun#", gunProgram).replace("#turn#", turnProgram);
-		String gunTemplate = botTemplate.replace("#ahead#", aheadProgram).replace("#gun#", "#gswarm-simple.grm").replace("#turn#", turnProgram);
-		String turnTemplate = botTemplate.replace("#ahead#", aheadProgram).replace("#gun#", gunProgram).replace("#turn#", "#gswarm-simple.grm");
+		String aheadTemplate = botTemplate.replace("#ahead#", "#gswarm-ahead.grm").replace("#gun#", gunProgram).replace("#turn#", turnProgram);
+		String gunTemplate = botTemplate.replace("#ahead#", aheadProgram).replace("#gun#", "#gswarm-gun.grm").replace("#turn#", turnProgram);
+		String turnTemplate = botTemplate.replace("#ahead#", aheadProgram).replace("#gun#", gunProgram).replace("#turn#", "#gswarm-turn.grm");
 		
 		FileUtils.saveStringToFile("templates/ahead_bot.tmpl", aheadTemplate);
 		FileUtils.saveStringToFile("templates/gun_bot.tmpl", gunTemplate);
