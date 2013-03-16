@@ -28,7 +28,7 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 		Matcher matcher;
 		String grammarFile, key;
 		GSwarmBehaviorGenerator program;
-
+		
 		try {
 			while ((strLine = _br.readLine()) != null)   {
 				matcher = pattern.matcher(strLine);
