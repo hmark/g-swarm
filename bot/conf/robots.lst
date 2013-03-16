@@ -6,9 +6,9 @@
 6 sample.TrackFire 10
 7 sample.VelociRobot 10
 8 sample.SpinBot 10
-9 NDH.GuessFactor-1.0 5
-10 gg.Peryton1_1* 5
-11 geep.mini.GPBotA-1.0 5
+9 geep.mini.GPBotA-1.0 5
+10 NDH.GuessFactor-1.0 5
+11 gg.Peryton1_1* 5
 12 sample.Walls 5
 13 dummy.micro.Sparrow-2.5 5
 14 davidalves.net.DuelistMicro-1.22 5
