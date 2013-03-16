@@ -1,0 +1,1 @@
+<!EXP> = <!EXP> + <!EXP> | <!EXP> - <!EXP> | getHeadingRadians() | getGunHeadingRadians() | e.getBearingRadians()

@@ -1,0 +1,1 @@
+<!EXP> = Math.abs(<!EXP>) | Math.sin(<!EXP>) | (-(<!EXP>)) | e.getEnergy()
