@@ -3,9 +3,8 @@ import os
 import shutil
 import subprocess
 import sys
-from time import time
+from time import time, ctime
 import threading
-import traceback
 
 JAVAC_PATH = ""
 ROBOCODE_PATH = ""
@@ -15,6 +14,8 @@ SWARM_NAME = ""
 
 COMPILATION_SEMAS = 30
 TEST_SEMAS = 30
+
+compiled_robots = []
 
 
 class Logger():
@@ -26,16 +27,18 @@ class Logger():
         self.f = open(robots_src_path + "/logs/" + iter_str + ".log", "w")
 
     def write(self, text):
-        self.f.write(str(text) + "\n")
+        print(ctime() + ": " + str(text))
+        self.f.write(ctime() + ": " + str(text) + "\n")
 
 
 class CompilationThread(threading.Thread):
 
-    def __init__(self, semaphore, particle_id, robots_src_path):
+    def __init__(self, semaphore, particle_position, particle_id, robots_src_path):
         threading.Thread.__init__(self)
 
         self.semaphore = semaphore
         self.particle_id = particle_id
+        self.particle_position = particle_position
         self.robots_src_path = robots_src_path
 
     def compileRobot(self):
@@ -45,6 +48,7 @@ class CompilationThread(threading.Thread):
         if os.path.isfile(target_scr_path):
             self.semaphore.acquire()
             subprocess.call("%s -d %s -cp %s/libs/*; %s" % (JAVAC_PATH, target_dir_path, ROBOCODE_PATH, target_scr_path))
+            compiled_robots.append(self.particle_position)
             self.semaphore.release()
         else:
             logger.write("Missing source dir for robot #" + self.particle_id)
@@ -61,7 +65,7 @@ class BattleThread(threading.Thread):
         self.MAX_DIFFICULTY = len(enemies)
         self.difficulty = 1
         self.total = 0
-        self.wins = 0
+        self.fitness = 0
 
         self.semaphore = semaphore
         self.particle_id = particle_id
@@ -82,10 +86,8 @@ class BattleThread(threading.Thread):
         fh = open("NUL", "w")
         self.RESULT_PATH = self.robots_src_path + "/" + SWARM_NAME + "_particle" + self.particle_id + "/result" + str(self.difficulty) + ".rsl"
         self.BATTLE_LOG_PATH = self.robots_src_path + "/" + SWARM_NAME + "_particle" + self.particle_id + "/battle.log"
-        start_time = time()
         command = "java -DPARALLEL=true -Xmx512M -Dsun.io.useCanonCaches=false -cp %s/libs/robocode.jar robocode.Robocode -cwd %s -battle %s -nodisplay -results %s" % (ROBOCODE_PATH, ROBOCODE_PATH, self.BATTLE_CONFIG_PATH, self.RESULT_PATH)
         subprocess.call(command, stdout=fh, stderr=fh)
-        logger.write("battle time: " + str(time() - start_time))
         fh.close()
 
     def getBattleResult(self):
@@ -94,7 +96,13 @@ class BattleThread(threading.Thread):
 
         # regex = re.compile(r"[0-9]*%") # percentual score
         # regex = re.compile(r"\*[\t][0-9]*")  # raw score
-        regex = re.compile(r"gswarm.*\*.*\)\s+\d+\s+\d+\s+\d+\s+\d+\s+\d+\s+\d+\s+(\d+)")  # wins
+        # regex = re.compile(r"gswarm.*\*.*\)\s+\d+\s+\d+\s+\d+\s+\d+\s+\d+\s+\d+\s+(\d+)")  # wins
+
+        robot_regex = re.compile(r"gswarm.*\*\W(\d*)")  # robot score
+        enemy_regex = re.compile(r"(\d*) \(")  # enemy score
+
+        robot_score = 0
+        enemy_score = 0
 
         # log battle result to battle.log file
         with open(self.BATTLE_LOG_PATH, "a") as f:
@@ -105,28 +113,34 @@ class BattleThread(threading.Thread):
         for line in lines:
             if re.search(r"GSwarmRobot", line):
                 # result = int(re.findall(regex, line)[0][2:])
-                result_tuple = re.search(regex, line).groups()
+                result_tuple = re.search(robot_regex, line).groups()
                 for result in result_tuple:
-                    return int(result)
+                    robot_score += int(result)
+            elif re.search(r":", line):
+                result_tuple = re.search(enemy_regex, line).groups()
+                for result in result_tuple:
+                    enemy_score += int(result)
+
+        if enemy_score + robot_score == 0:
+            return 0
+
+        return robot_score / (enemy_score + robot_score)
 
     def updateScore(self):
-        self.wins = int(self.getBattleResult())
-        self.total += self.wins
+        self.fitness = self.getBattleResult()
+        self.total += self.fitness
 
     def isRobotSuccesful(self):
         win_limit = int(self.enemies[self.difficulty - 1][2])
-        return self.wins >= win_limit
+        return self.fitness >= win_limit
 
     def outputTotalScore(self):
         result_path = self.robots_src_path + "/" + SWARM_NAME + "_particle" + self.particle_id + "/score.log"
-        f = open(result_path, "w")
-        f.write(str(self.total) + "\n")
+        with open(result_path, "w") as f:
+            f.write(str(self.total) + "\n")
 
     def run(self):
         try:
-            self.semaphore.acquire()
-            logger.write("battle semaphore acquired " + self.particle_id)
-
             while True:
                 self.copyRobot()
                 self.startBattle()
@@ -137,14 +151,11 @@ class BattleThread(threading.Thread):
                     self.updateBattleConfig()
                 else:
                     self.outputTotalScore()
-                    break
+                    return
 
         except Exception as e:
+            logger.write("battle error in " + self.particle_id)
             logger.write(str(e))
-            logger.write(traceback.print_exc())
-        finally:
-            logger.write("battle semaphore released" + self.particle_id)
-            self.semaphore.release()
 
 #### SCRIPT START ####
 
@@ -201,7 +212,7 @@ try:
     threads = []
     start_time = time()
     for i in range(0, PARTICLES):
-        t = CompilationThread(sema, transToParticleId(i), ROBOTS_SRC_PATH)
+        t = CompilationThread(sema, i, transToParticleId(i), ROBOTS_SRC_PATH)
         threads.append(t)
 
     [t.start() for t in threads]
@@ -214,11 +225,12 @@ except Exception as e:
 logger.write("Compilation time: " + str(time() - start_time))
 
 # test robots
+
 try:
     sema = threading.Semaphore(TEST_SEMAS)
     threads = []
     start_time = time()
-    for i in range(0, PARTICLES):
+    for i in compiled_robots:
         t = BattleThread(sema, transToParticleId(i), ROBOTS_SRC_PATH, enemies)
         threads.append(t)
 
@@ -228,6 +240,5 @@ try:
 except Exception as e:
     logger.write("Testing Error!")
     logger.write(str(e))
-    logger.write(traceback.print_exc())
 
 logger.write("Test time: " + str(time() - start_time))
