@@ -73,7 +73,7 @@ public class GSwarm extends PSO implements Runnable {
 	
 	protected void calculateFitness(){
 		Particle particle;
-		int result;
+		double result;
 		
 		for (int j = 0; j < Setup.PARTICLES; j++){
 			particle = _swarm.getParticleAt(j);
@@ -143,8 +143,8 @@ public class GSwarm extends PSO implements Runnable {
 		log += "gbest: " + gbest.getName() + " (from iteration " + gbest.getBestIteration() + ") with fitness " + gbest.getLocalBestFitness() +"\n";
 		log += "actual max: " + actualMax + " (" + particleActualMax.getName() + ")\n";
 		
-		log += "lbest mean: " + Math.floor(lbestMean / Setup.PARTICLES) + "\n";
-		log += "actual mean: " + Math.floor(actualMean / validParticlesNum) + " (only valid particles are counted)\n";
+		log += "lbest mean: " + lbestMean / Setup.PARTICLES + "\n";
+		log += "actual mean: " + actualMean / validParticlesNum + " (only valid particles are counted)\n";
 		
 		log += "valid particles: " + validParticlesNum + "\n";
 		log += "invalid particles: " + (Setup.PARTICLES - validParticlesNum) + "\n";
