@@ -4,7 +4,6 @@ import java.io.*;
 import java.lang.Runtime;
 
 import pso.Particle;
-import utils.FileUtils;
 
 public class RobotTester {
 	
@@ -28,19 +27,26 @@ public class RobotTester {
 			String command = "python " + TEST_SCRIPT_PATH + " " + particlesNum + " " + iteration + " "  + testPath + " " + swarmName;
 			System.out.println(command);
 			Process p = Runtime.getRuntime().exec(command);
+			
+			StreamGobbler errorGobbler = new StreamGobbler(p.getErrorStream(), "ERROR");
+			StreamGobbler outputGobbler = new StreamGobbler(p.getInputStream(), "OUTPUT");
+
+			// start gobblers
+			outputGobbler.start();
+			errorGobbler.start();
 			p.waitFor();
 		} catch (IOException | InterruptedException e) {
 			System.err.println("Error: " + e.getMessage());
 		}	
 	}
 	
-	public static int loadTotalScore(Particle particle){
+	public static double loadTotalScore(Particle particle){
 		File file = new File(particle.getDir() + "/score.log");
 		
 		try{
 			BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
 			String line = br.readLine();
-			return Integer.parseInt(line);
+			return Double.parseDouble(line);
 		} catch (IOException e) {
 			System.err.println("Error: " + e.getMessage());
 		} catch (java.lang.NullPointerException e) {
