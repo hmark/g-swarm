@@ -1,1 +1,1 @@
-<!EXP> = <!EXP> + <!EXP> | getBattleFieldWidth() | (setFireBullet(3)==null ? 0.0D : 1.0D)
+<!EXP> = ((<!EXP> > 0) ? (<!EXP>) : (<!EXP>)) | <!EXP> + <!EXP> | <!EXP> - <!EXP> | Math.abs(<!EXP>) | Math.cos(Math.PI * <!EXP>) | (-(<!EXP>)) | Math.random() | e.getDistance() / 300.0D | e.getBearingRadians() | e.getHeadingRadians() - getHeadingRadians() | e.getVelocity() / 300.0D | e.getEnergy() / 100.0D | getEnergy() / 100.0D

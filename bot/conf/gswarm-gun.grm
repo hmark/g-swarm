@@ -1,1 +1,6 @@
-<!EXP> = <!EXP> + <!EXP> | <!EXP> - <!EXP> | getHeadingRadians() | getGunHeadingRadians() | e.getBearingRadians()
+<!EXP> = <!IFF> | <!LOG>
+<!LOG> = <!OPP> | <!VAR> | <!CON>
+<!IFF> = ((<!LOG> > <!LOG>) ? (<!EXP>) : (<!EXP>))
+<!OPP> = <!LOG> + <!LOG> | <!LOG> - <!LOG> | <!LOG> * <!LOG> | Math.abs(<!LOG>) | Math.cos(Math.PI * <!LOG>) | (-(<!LOG>))
+<!VAR> = (Math.random() * 2 - 1) | e.getDistance() / 300.0D | e.getBearingRadians() | e.getHeadingRadians() - getHeadingRadians() | e.getVelocity() / 300.0D | e.getEnergy() / 100.0D | getEnergy() / 100.0D
+<!CON> = (- Math.PI / 2) | (-Math.PI / 4) | (Math.PI / 4) | (Math.PI / 2)
