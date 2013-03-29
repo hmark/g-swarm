@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.regex.*;
 
 import grammar.*;
+import gswarm.Conf;
 
 public class BehaviorGenerator {
 	
@@ -83,7 +84,7 @@ public class BehaviorGenerator {
 	}
 	
 	protected void resetBody(){
-		_body = "<!EXP>";
+		_body = Conf.INIT_STRING;
 	}
 	
 	public String getKey(){

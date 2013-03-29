@@ -25,9 +25,9 @@ public class GSwarm extends PSO implements Runnable {
 		init();
 	}
 	
-	private void init(){
+	protected void init(){
 		RobotTester.loadTestScriptPath();
-		loadTemplate("templates/bot_normal.tmpl");
+		loadTemplate(Conf.TEMPLATE);
 	}
 	
 	public void loadTemplate(String templatePath){
