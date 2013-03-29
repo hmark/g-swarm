@@ -11,7 +11,7 @@ import generator.RobotGenerator;
 
 public class GSwarmRobotGenerator extends RobotGenerator {
 	
-	private ArrayList<GSwarmBehaviorGenerator> _gSwarmPrograms;
+	protected ArrayList<GSwarmBehaviorGenerator> _gSwarmPrograms;
 	
 	public GSwarmRobotGenerator(String filename){
 		super(filename);
@@ -75,6 +75,37 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 		}
 		else	
 			FileUtils.saveStringToFile("invalid_" + particle.getSrc(), body);
+	}
+	
+	public String generateRobotToString(Particle particle){
+		int programsNum = _gSwarmPrograms.size();
+		int lastIndex = 0;
+		GSwarmBehaviorGenerator program;
+		
+		String body = FileUtils.convertFileToString(_filename);
+		
+		particle.setValid(true);
+		
+		for (int i = 0; i < programsNum; i++){
+			program = _gSwarmPrograms.get(i);
+			program.loadGrammar();
+			lastIndex = program.generateBody(particle, lastIndex);
+			
+			body = body.replaceFirst(program.getKey(), program.getBody());
+			body = body.replaceFirst("#ROBOTCLASS#", particle.getId());
+			
+			if (lastIndex == -1){
+				particle.setValid(false);
+				break;
+			}
+		}
+		
+		if (particle.isValid()){
+			particle.setTreeSize(lastIndex);
+			return body;
+		}
+		else	
+			return "0";
 	}
 	
 	public String translateGlobalBestParticleToProgram(Particle particle){
