@@ -79,7 +79,7 @@ public class RobotGenerator {
 
 		for (int i = 0; i < programsNum; i++){
 			program = _programs.get(i);
-			//System.out.println("REPL: " + program.getKey() + " - " + program.getBody());
+			System.out.println("REPL: " + program.getKey() + " - " + program.getBody());
 			body = body.replace(program.getKey(), program.getBody());
 		}
 		
