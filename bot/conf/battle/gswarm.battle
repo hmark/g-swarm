@@ -2,7 +2,7 @@
 #Thu Oct 25 17:48:57 CEST 2012
 robocode.battle.numRounds=20
 robocode.battle.gunCoolingRate=0.1
-robocode.battleField.width=600
+robocode.battleField.width=800
 robocode.battle.selectedRobots=#ENEMY#,#ROBOT#*
 robocode.battle.rules.inactivityTime=300
 robocode.battle.hideEnemyNames=true
