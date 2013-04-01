@@ -1,0 +1,142 @@
+package gswarm;
+import robocode.AdvancedRobot;
+import robocode.ScannedRobotEvent;
+import java.awt.Color;
+import java.awt.Graphics2D;
+public class GSwarmRobot#ROBOTCLASS# extends AdvancedRobot {
+	double lastX = 0.0D;
+	double lastY = 0.0D;
+	double nStickX = 0.0D;
+	double nStickY = 0.0D;
+	
+	double wStickX = 0.0D;
+	double wStickY = 0.0D;
+	
+	double eStickX = 0.0D;
+	double eStickY = 0.0D;
+	
+	double sStickX = 0.0D;
+	double sStickY = 0.0D;
+	public void onScannedRobot(ScannedRobotEvent e) {
+		double turnRightRadians = robocode.util.Utils.normalRelativeAngle(#gswarm-net.grm);
+		double turnGunRightRadians = robocode.util.Utils.normalRelativeAngle(e.getBearingRadians() + (getHeadingRadians() - getGunHeadingRadians()));
+		double turnRadarRightRadians = robocode.util.Utils.normalRelativeAngle(e.getBearingRadians() + (getHeadingRadians() - getRadarHeadingRadians()));
+		double shoot = 3;
+
+		lastX = getX();
+		lastY = getY();
+
+		System.out.println("turn: " + turnRightRadians);
+		System.out.println("x: " + getX());
+		System.out.println("y: " + getY());
+		System.out.println("width: " + getBattleFieldWidth());
+		System.out.println("height: " + getBattleFieldHeight());
+
+		System.out.println("e.getDistance(): " + e.getDistance());
+		System.out.println("wallDistance: " + wallDistance());
+		System.out.println("southWallDistance: " + southWallDistance());
+		System.out.println("eastWallDistance: " + eastWallDistance());
+		System.out.println("northWallDistance: " + northWallDistance());
+		System.out.println("westWallDistance: " + westWallDistance());
+
+		setTurnRightRadians(turnRightRadians);
+		setTurnGunRightRadians(turnGunRightRadians);
+		setTurnRadarRightRadians(turnRadarRightRadians);
+		setFireBullet(shoot);
+	}
+	public void run() {
+		setAdjustGunForRobotTurn(true);
+		setAdjustRadarForRobotTurn(true);
+		setAdjustRadarForGunTurn(true);
+		
+		while (true) {
+			turnRadarRightRadians(Double.POSITIVE_INFINITY);
+		}
+	}
+
+	public void onPaint(Graphics2D g) {
+     // Set the paint color to a red half transparent color
+     g.setColor(new Color(0xff, 0x00, 0x00, 0xff));
+ 
+     // Draw a line from our robot to the scanned robot
+     g.drawLine((int)lastX, (int)lastY, (int)nStickX, (int)nStickY);
+     g.setColor(new Color(0x00, 0xff, 0x00, 0xff));
+     g.drawLine((int)lastX, (int)lastY, (int)sStickX, (int)sStickY);
+     g.setColor(new Color(0x00, 0x00, 0xff, 0xff));
+     g.drawLine((int)lastX, (int)lastY, (int)eStickX, (int)eStickY);
+     g.setColor(new Color(0xff, 0xff, 0x00, 0xff));
+     g.drawLine((int)lastX, (int)lastY, (int)wStickX, (int)wStickY);
+ 
+     // Draw a filled square on top of the scanned robot that covers it
+     //g.fillRect(scannedX - 20, scannedY - 20, 40, 40);
+ }
+
+ 	public int shoot(double power){
+ 		setFireBullet(power);
+ 		System.out.println("power: " + power);
+ 		return 0;
+
+ 	}
+
+	public int goAhead(double velocity){
+		setAhead(velocity);
+		System.out.println("ahead: " + velocity);
+		return 0;
+	}
+
+	public double northStickSensor(){
+		double x = getX() + 150 * Math.cos(getHeadingRadians() - Math.PI / 2);
+		double y = getY() - 150 * Math.sin(getHeadingRadians() - Math.PI / 2);
+		nStickX = x;
+		nStickY = y;
+		return isOutside(nStickX, nStickY) ? 1.0 : 0.0;
+	}
+
+	public double southStickSensor(){
+		double x = getX() + 150 * Math.cos(getHeadingRadians() + Math.PI / 2);
+		double y = getY() - 150 * Math.sin(getHeadingRadians() + Math.PI / 2);
+		sStickX = x;
+		sStickY = y;
+		return isOutside(sStickX, sStickY) ? 1.0 : 0.0;
+	}
+
+	public double eastStickSensor(){
+		double x = getX() + 150 * Math.cos(getHeadingRadians());
+		double y = getY() - 150 * Math.sin(getHeadingRadians());
+		eStickX = x;
+		eStickY = y;
+		return isOutside(eStickX, eStickY) ? 1.0 : 0.0;
+	}
+
+	public double westStickSensor(){
+		double x = getX() + 150 * Math.cos(getHeadingRadians() - Math.PI);
+		double y = getY() - 150 * Math.sin(getHeadingRadians() - Math.PI);
+		wStickX = x;
+		wStickY = y;
+		return isOutside(wStickX, wStickY) ? 1.0 : 0.0;
+	}
+
+	public boolean isOutside(double x, double y){
+		return x < 0 || x > getBattleFieldWidth() || y < 0 || y > getBattleFieldHeight();
+	}
+
+	public double wallDistance(){
+		return Math.min(Math.min(southWallDistance(), northWallDistance()), Math.min(eastWallDistance(), westWallDistance()));
+	}
+
+	public double southWallDistance(){
+		return getY();
+	}
+
+	public double eastWallDistance(){
+		return getBattleFieldWidth() - getX();
+	}
+
+	public double northWallDistance(){
+		return getBattleFieldHeight() - getY();
+	}
+
+	public double westWallDistance(){
+		return getX();
+	}
+}

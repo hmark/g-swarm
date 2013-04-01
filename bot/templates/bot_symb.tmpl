@@ -1,0 +1,42 @@
+package gswarm;
+
+import robocode.AdvancedRobot;
+import robocode.ScannedRobotEvent;
+import robocode.StatusEvent;
+
+public class GSwarmRobot#ROBOTCLASS# extends AdvancedRobot {
+
+	static final int STICK_LENGTH = 150;
+    static final int width = 800;
+    static final int height = 600;
+    static double x;
+    static double y;
+    static double heading;
+
+    public void onScannedRobot(ScannedRobotEvent e) {
+        double absoluteBearing;
+
+        setAhead(-0.67 * (Math.min(Math.min((y = getY()), height - y), Math.min((x = getX()), width - x))) - 0.035 * e.getDistance());
+        setTurnRightRadians(robocode.util.Utils.normalRelativeAngle(
+            - 0.09 * isOutside(- Math.PI / 2) // N
+            - 0.48 * isOutside(0)  // E
+            - isOutside(Math.PI / 2) // S
+            - isOutside(- Math.PI) // W
+            + (absoluteBearing = e.getBearingRadians()) * 0.10)
+        );
+        setTurnGunRightRadians(robocode.util.Utils.normalRelativeAngle((absoluteBearing += heading) - getGunHeadingRadians()));
+        setTurnRadarRightRadians(robocode.util.Utils.normalRelativeAngle((absoluteBearing - getRadarHeadingRadians())));
+        setFireBullet(#gswarm-firesymb.grm);
+    }
+    
+    public void onStatus(StatusEvent e) {
+        setAdjustGunForRobotTurn(true);
+        setTurnRadarRightRadians(1);
+    }
+
+    private double isOutside(double angle){
+        double targetX;
+        double targetY;
+        return ((targetX = x + STICK_LENGTH * Math.cos((heading = getHeadingRadians()) + angle)) < 0 || targetX > width || (targetY = y - STICK_LENGTH * Math.sin(heading + angle)) < 0 || targetY > height) ? 1.0 : 0.0;
+    }
+}

@@ -1,0 +1,4 @@
+<!EXP> = 1 / (<!VAL>)
+<!VAL> = <!VAL> <!OPP> <!VAL> | <!VAR>
+<!OPP> = + | - | * | /
+<!VAR> = e.getEnergy() | getEnergy() | e.getDistance()
