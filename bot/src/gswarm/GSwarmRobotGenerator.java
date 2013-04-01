@@ -54,7 +54,7 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 		String body = FileUtils.convertFileToString(_filename);
 		
 		particle.setValid(true);
-		
+
 		for (int i = 0; i < programsNum; i++){
 			program = _gSwarmPrograms.get(i);
 			program.loadGrammar();

@@ -10,7 +10,7 @@ import gui.Window;
 
 public class GSwarm extends PSO implements Runnable {
 	
-	public String name = "";
+	public String name = "fire";
 	private String _filePrefix = "test/test" + DateUtils.getCurrentDateTime("yyyy-MM-dd-HH-mm-ss") + "/";
 	public GSwarmRobotGenerator robotGen;
 	
@@ -40,7 +40,7 @@ public class GSwarm extends PSO implements Runnable {
 		for (int i = 0; i < Setup.ITERATIONS; i++){
 			iteration = i;
 			generateRobots();
-			
+
 			testRobots();
 			
 			calculateFitness();
