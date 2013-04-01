@@ -34,12 +34,10 @@ public class RunTestCommand {
 		System.out.println("Setup.WMIN: " + Setup.WMIN);
 		System.out.println("Setup.WMAX: " + Setup.WMAX);
 		
-		/*
-		Thread t = new Thread(new GSwarm());
-		ThreadManager.addThread(t);
-		t.start();*/
 		
-		Thread t = new Thread(new ParallelGSwarm());
+		Thread t = new Thread(new GSwarm());
+		//Thread t = new Thread(new SymbolicRegressionGSwarm());
+		//Thread t = new Thread(new ParallelGSwarm());
 		ThreadManager.addThread(t);
 		t.start();
 	}
