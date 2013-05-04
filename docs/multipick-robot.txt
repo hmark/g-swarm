@@ -1,0 +1,106 @@
+MOVEMENT:
+ - oscillation
+ - random
+ - linear
+ - stop and go
+
+RADAR:
+ - lazy lock
+
+GUN: (virtual guns)
+ - guess factor
+ - pattern matching
+ - visitcount stats
+ - heads-on targeting
+ - linear targeting
+
+FIRE:
+ - (from Ringo2.0) ?
+
+
+----------
+SHARES
+- prob of direction swap in full speed (ahead * -1)
+- prob of stop in full speed (ahead to zero)
+- prob of random point in escape area
+- prob of taking straight movement
+
+- prob of generated guess factor angle
+- prob of matched angle in pattern
+- prob of heads-on angle
+- prob of linear targeting
+- prob of visit count stats angle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DOCS ISSUES:
+ 1. opisat casovu zlozitost
+ 2. porovnanie a analyza vygenerovanych programov robota
+
+-----------------------------
+- Phoenix (kod, gramatika)
+    - zakladna struktura je napomocna generovaniu spravania (hodnoty su vydelene, aby to boli prispevky v intervale 0 az 2*PI)
+    - pridanie konstant
+    - radar lock a pevna strelba
+    - riesenie je v celku trivialne
+- GSwarm
+    - mrtve vetvy (ma aj GPBot po analyze)
+    - nehodi sa na generovanie komplexnych rieseni (absencia krizenia je problem, hodi sa len pre male gramatiky)
+- Metody (pdf)
+    - sekvencia prikazov
+    - multiplexer (nie je mozne nijako pouzit)
+    - symbolicka regresia
+    - parametrizacia
+    - hill climbing
+        - dlhy vypocet
+        - oplati sa len pre maly pocet konstant
+- Ringo 1.0 (kod, gramatika)
+    - generovanie parametrov pre pohyb a otacanie robota uz do existujuceho spravania robota (wall distance)
+    - gramatika transformuje polohy castic do intervalu -1.0 az 1.0
+    - vytvorenie NanoBota s jednoduchou strelbou (100. miesto)
+- Ringo 2.0 (kod, gramatika)
+    - vytvorenie funkcie strelby pomocou symbolickej regresie (1/X, malo konstant)
+    - dosiahnutie 80. miesta v NanoBotoch
+- MicroBot
+    - vyber pohybu a metody strelby z pola vytvorenych moznosti pomocou vypoctu na zaklade vitazstiev s jednotlivymi zbranmi/pohybom
+    - evolvovanie jednotlivych sad pravdepodobnosti je realizovane proti skupinam robotov s rovnakymi vlastnostami
+    - Yatagan - robot lahkej vahy, ktory kombinuje viacero typov pohybu (2.miesto v Nano a 23.miesto v Micro)

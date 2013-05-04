@@ -4,6 +4,8 @@
 
 bot/test/
 cd
+*.sublime-workspace
+*.sublime-project
 
 *.pydevproject
 .project

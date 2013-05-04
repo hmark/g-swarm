@@ -1,0 +1,241 @@
+/*
+Flex by hlavko
+ 
+Credits: 
+Pattern Matching code and movement idea from nanobot Yatagan. Firing from Ringo.
+Thanks to all open source bot authors and contributors to the RoboWiki.
+ 
+Flex is open source and released under the terms of the RoboWiki Public Code License (RWPCL) - Version 1.1
+see license here: http://robowiki.net/wiki/RWPCL
+*/
+ 
+package gswarm;
+ 
+import robocode.*;
+import robocode.util.Utils;
+ 
+public class GSwarmRobot#ROBOTCLASS# extends AdvancedRobot {
+
+   static double direction;
+   static double enemyEnergy;
+   static int activeStrategy = 0;
+   static double absoluteBearing;
+   static double distance;
+   static double gunHeading;
+   static int coldStreak = 0;
+ 
+   public void run(){
+      double bestScore = -100000.0;
+    double score;
+    double oldActiveStrategy = activeStrategy;
+
+      System.out.println("coldStreak:" + coldStreak);
+        for (int i = 0; i < 7; i++){
+            score = ((double)strategies[i][0] + 1) / ((double)strategies[i][1] + 1);
+            System.out.println("strategy " + i + ":" + strategies[i][0] + " / " + strategies[i][1] + "(" + score + " / " + bestScore + ")");
+            if (coldStreak > 0 && oldActiveStrategy == i){
+              continue;
+            }
+
+            if (score > bestScore){
+                bestScore = score;
+                activeStrategy = i;
+            }
+        }
+
+      if (oldActiveStrategy != activeStrategy)
+        coldStreak = 0;
+
+      System.out.println("active strategy:" + activeStrategy);
+
+      setAdjustGunForRobotTurn(true);
+      setAdjustRadarForRobotTurn(true);
+      setAdjustRadarForGunTurn(true);
+      setTurnRadarRightRadians(direction = Double.POSITIVE_INFINITY);
+   }
+ 
+   public void onScannedRobot(ScannedRobotEvent e){
+      absoluteBearing = e.getBearingRadians() + getHeadingRadians();
+      gunHeading = getGunHeadingRadians();
+   
+   
+   double newEnemyEnergy = e.getEnergy();  
+   double d = ((enemyEnergy - 1.09999999999 + strategies[activeStrategy][2]*Math.random() - newEnemyEnergy));
+   enemyEnergy = newEnemyEnergy;
+   
+   if ((char)d <= 1 || strategies[activeStrategy][2] < 0) 
+         onHitWall(null);
+      
+      setAhead(direction);
+      setTurnRightRadians(Math.cos(e.getBearingRadians()) + ((strategies[activeStrategy][7] - (distance = e.getDistance())) * (getVelocity()  / 3000)));
+      setTurnGunRightRadians(Utils.normalRelativeAngle((((double)strategies[activeStrategy][3] / 100.0) * getPatternMatchingGun(e) + ((double)strategies[activeStrategy][4] / 100.0) * getRandomGun(e) + ((double)strategies[activeStrategy][5] / 100.0) * getHeadsOnGun(e) + ((double)strategies[activeStrategy][6] / 100.0) * getLinearGun(e))));
+      setFire(enemyEnergy * getEnergy() / distance);
+      setTurnRadarLeftRadians(getRadarTurnRemainingRadians());
+   }
+
+   private double getPatternMatchingGun(ScannedRobotEvent e){
+    int integer = 30;
+    int matchPosition;
+    double localAbsoluteBearing = absoluteBearing;
+        enemyHistory = String.valueOf((char) (e.getVelocity() * (Math.sin(e.getHeadingRadians() - localAbsoluteBearing)))).concat(enemyHistory);
+
+        while((matchPosition = enemyHistory.indexOf(enemyHistory.substring(0, integer--), 64)) < 0);
+ 
+      integer = (int)(distance);
+
+      do { 
+         localAbsoluteBearing += ((short) enemyHistory.charAt(--matchPosition)) /  distance;
+      } while ((integer -= 12) > 0);
+
+      return localAbsoluteBearing - gunHeading;
+   }
+
+   private double getRandomGun(ScannedRobotEvent e){
+    double escapeAngle = Math.asin(8 / Rules.getBulletSpeed(2.6666666666666666666666666666666666666666666666));
+       double randomAimOffset = -escapeAngle + Math.random() * 2 * escapeAngle;
+    return getHeadsOnGun(e) + randomAimOffset;
+   }
+
+   private double getHeadsOnGun(ScannedRobotEvent e){
+    return e.getBearingRadians() + getHeadingRadians() - gunHeading;
+   }
+
+   private double getLinearGun(ScannedRobotEvent e){
+    return getHeadsOnGun(e) + getLinearShift(e);
+   }
+
+   private double getLinearShift(ScannedRobotEvent e){
+        return (e.getVelocity() * Math.sin(e.getHeadingRadians() - absoluteBearing) / 13.0);
+   }
+ 
+   public void onDeath(DeathEvent e){
+      strategies[activeStrategy][1]++;
+      coldStreak++;
+   }
+
+   public void onWin(WinEvent e){
+      strategies[activeStrategy][0]++;
+      coldStreak = 0;
+    }
+ 
+   public void onHitWall(HitWallEvent e){
+      direction = -direction;
+   }
+
+   static final int[][] strategies = {
+         {0, 0, 29, 18, 10, 0, 76, 320},
+         {0, 0, #gswarm-micro.grm}
+   };
+ 
+   static String enemyHistory = ""
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 2
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char) 1 + (char) 1 + (char) 1
+   + (char) 1 + (char)-2 + (char)-4 + (char)-6
+   + (char)-8 + (char)-8 + (char)-8 + (char)-8
+   + (char)-8 + (char)-8 + (char)-8 + (char)-8
+   + (char)-8 + (char)-8 + (char)-8 + (char)-8
+   + (char)-8 + (char)-8 + (char)-8 + (char)-8
+   + (char)-8 + (char)-8 + (char)-8 + (char)-8
+   + (char)-8 + (char)-8 + (char)-8 + (char)-8
+   + (char)-8 + (char)-8 + (char)-8 + (char)-8
+   + (char)-8 + (char)-8 + (char)-8 + (char)-8
+   + (char)-8 + (char)-8 + (char)-8 + (char)-8
+   + (char)-8 + (char)-8 + (char)-8 + (char)-8
+   + (char)-7 + (char)-6 + (char)-5 + (char)-4
+   + (char)-3 + (char)-2 + (char)-1 + (char)1
+   + (char) 2 + (char) 4 + (char) 6 + (char) 8
+   + (char) 8 + (char) 8 + (char) 8 + (char) 8
+   + (char) 8 + (char) 8 + (char) 8 + (char) 8
+   + (char) 8 + (char) 8 + (char) 8 + (char) 8
+   + (char) 8 + (char) 8 + (char) 8 + (char) 8
+   + (char) 8 + (char) 8 + (char) 8 + (char) 8
+   + (char) 8 + (char) 8 + (char) 8 + (char) 8
+   + (char) 8 + (char) 8 + (char) 8 + (char) 8
+   + (char) 8 + (char) 8 + (char) 8 + (char) 8
+   + (char) 8 + (char) 8 + (char) 8 + (char) 8
+   + (char) 8 + (char) 8 + (char) 8 + (char) 8
+   + (char) 7 + (char) 6 + (char) 5 + (char) 4
+   + (char) 3 + (char) 2 + (char) 1 + (char) 1;
+}
