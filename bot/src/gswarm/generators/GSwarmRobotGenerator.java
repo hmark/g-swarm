@@ -1,26 +1,57 @@
-package gswarm;
+package gswarm.generators;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pso.*;
 import utils.FileUtils;
-import generator.RobotGenerator;
 
-public class GSwarmRobotGenerator extends RobotGenerator {
+/**
+ * Trieda zabezpecujuca generovanie viacerych spravani (modulov) v ramci jedneho robota.
+ * @author Marek Hlav·Ë <mark.hlavac@gmail.com>
+ *
+ */
+public class GSwarmRobotGenerator {
 	
+	protected BufferedReader _br;
+	protected String _filename;
 	protected ArrayList<GSwarmBehaviorGenerator> _gSwarmPrograms;
 	
+	/**
+	 * Konstruktor.
+	 * @param filename 
+	 */
 	public GSwarmRobotGenerator(String filename){
-		super(filename);
+		_filename = filename;
 		_gSwarmPrograms = new ArrayList<GSwarmBehaviorGenerator>();
 		
 		openTemplateFile();
 		findProgramSpaces();
 	}
 	
+	/**
+	 * Otvorenie suboru so sablonou robota.
+	 */
+	protected void openTemplateFile(){
+		try{
+			FileInputStream fstream = new FileInputStream(_filename);
+			DataInputStream in = new DataInputStream(fstream);
+			_br = new BufferedReader(new InputStreamReader(in));
+		}
+		catch(Exception e){
+			System.err.println("Error: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * Vyhladanie miest v programe, kde sa bude generovat spravanie.
+	 */
 	protected void findProgramSpaces(){
 		String strLine;
 		
@@ -46,6 +77,10 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 		}
 	}
 	
+	/**
+	 * Generovanie spravania robota.
+	 * @param particle
+	 */
 	public void generateRobot(Particle particle){
 		int programsNum = _gSwarmPrograms.size();
 		int lastIndex = 0;
@@ -77,6 +112,11 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 			FileUtils.saveStringToFile("invalid_" + particle.getSrc(), body);
 	}
 	
+	/**
+	 * Generuj spravanie pomocou castice do retazca.
+	 * @param particle
+	 * @return
+	 */
 	public String generateRobotToString(Particle particle){
 		int programsNum = _gSwarmPrograms.size();
 		int lastIndex = 0;
@@ -108,6 +148,11 @@ public class GSwarmRobotGenerator extends RobotGenerator {
 			return "0";
 	}
 	
+	/**
+	 * Vygeneruj robota pomocou najlepsej pozicie castice.
+	 * @param particle
+	 * @return
+	 */
 	public String translateGlobalBestParticleToProgram(Particle particle){
 		GSwarmBehaviorGenerator program = _gSwarmPrograms.get(0);
 		program.loadGrammar();

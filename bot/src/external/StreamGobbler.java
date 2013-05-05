@@ -5,6 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+/**
+ * Prepojenie io streamov externeho programu s Java programom.
+ * Riesenie je vytvorene na zaklade odpovedi od asgotha:
+ * http://stackoverflow.com/questions/14165517/processbuilder-capturing-stdout-and-stderr-of-started-processes-to-another-stre
+ * @author asgoth
+ *
+ */
 public class StreamGobbler extends Thread {
     InputStream is;
     String type;

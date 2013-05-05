@@ -1,3 +1,6 @@
+"""Simple script used for generating parametric grammars.
+"""
+
 i = 0
 n = -1.0
 s = ""

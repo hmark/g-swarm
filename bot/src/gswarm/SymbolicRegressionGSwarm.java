@@ -1,7 +1,5 @@
 package gswarm;
 
-import gui.Window;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -36,7 +34,7 @@ public class SymbolicRegressionGSwarm extends GSwarm {
 		fitnessMap.put(100.0, 0.01);
 		fitnessMap.put(1000.0, 0.001);
 		
-		loadTemplate("templates/bot_regression.tmpl");
+		loadTemplate(Conf.TEMPLATE);
 	}
 	
 	protected void testRobots(){
@@ -52,8 +50,10 @@ public class SymbolicRegressionGSwarm extends GSwarm {
 			if (particle.isValid()){
 				fitness = 0;
 				try {
+					@SuppressWarnings("rawtypes")
 					Iterator it = fitnessMap.entrySet().iterator();
 					while (it.hasNext()) {
+						@SuppressWarnings("rawtypes")
 						Map.Entry pairs = (Map.Entry)it.next();
 						formula = robotGen.generateRobotToString(particle).replaceAll("a", pairs.getKey().toString());
 					    result = new Double(engine.eval(formula).toString());
@@ -88,9 +88,11 @@ public class SymbolicRegressionGSwarm extends GSwarm {
 			
 			logIteration();
 			
+			output();
+			
 			updateLocations();
 			
-			output();
+			
 		}
 	}
 	
@@ -98,14 +100,16 @@ public class SymbolicRegressionGSwarm extends GSwarm {
 		Particle particle = _swarm.getGlobalBestParticle();
 		String formula = robotGen.generateRobotToString(particle);
 		System.out.println(iteration + ": (" + particle.getLocalBestFitness() + ") " + formula);
-		
-		double result, fitness;
+	
+		/*
+		@SuppressWarnings("rawtypes")
 		Iterator it = fitnessMap.entrySet().iterator();
 		while (it.hasNext()) {
+			@SuppressWarnings("rawtypes")
 			Map.Entry pairs = (Map.Entry)it.next();
 			formula = robotGen.generateRobotToString(particle).replaceAll("a", pairs.getKey().toString());
 		    try {
-				result = new Double(engine.eval(formula).toString());
+		    	double result = new Double(engine.eval(formula).toString());
 				System.out.println(result + " : " + Double.parseDouble(pairs.getValue().toString()));
 			}catch (ScriptException e) {
 				// TODO Auto-generated catch block
@@ -113,5 +117,6 @@ public class SymbolicRegressionGSwarm extends GSwarm {
 			}
 			
 		}
+		*/
 	}
 }

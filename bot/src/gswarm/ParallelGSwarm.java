@@ -1,6 +1,5 @@
 package gswarm;
 
-import gui.Window;
 import pso.*;
 import utils.FileUtils;
 

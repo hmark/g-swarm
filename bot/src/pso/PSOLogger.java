@@ -1,8 +1,12 @@
-package log;
+package pso;
 
-import pso.*;
 import utils.FileUtils;
 
+/**
+ * Logovanie priebehu PSO do konzoly.
+ * @author Marek Hlav·Ë
+ *
+ */
 public class PSOLogger {
 	
 	static public void logGSwarmIteration(String prefix, int iter, Swarm swarm){

@@ -4,13 +4,17 @@ import external.ThreadManager;
 import pso.Setup;
 import gswarm.*;
 //import pso.*;
-import gui.Window;
+import gui.App;
 
-
+/**
+ * Spustenie experimentu.
+ * @author Marek Hlav·Ë <mark.hlavac@gmail.com>
+ *
+ */
 public class RunTestCommand {
 
 	public RunTestCommand(){
-		Window window = Window.getInstance();
+		App window = App.getInstance();
 		
 		Setup.PARTICLES = window.getParticlesNum();
 		Setup.ITERATIONS = window.getIterationsNum();
@@ -22,6 +26,8 @@ public class RunTestCommand {
 		Setup.C2 = window.getC2Num();
 		Setup.WMIN = window.getMinWeightNum();
 		Setup.WMAX = window.getMaxWeightNum();
+		Conf.TEMPLATE = window.getRobotTemplate();
+		Conf.INIT_STRING = window.getInitExpression();
 		
 		System.out.println("Setup.PARTICLES: " + Setup.PARTICLES);
 		System.out.println("Setup.ITERATIONS: " + Setup.ITERATIONS);
@@ -33,6 +39,8 @@ public class RunTestCommand {
 		System.out.println("Setup.C2: " + Setup.C2);
 		System.out.println("Setup.WMIN: " + Setup.WMIN);
 		System.out.println("Setup.WMAX: " + Setup.WMAX);
+		System.out.println("Conf.TEMPLATE: " + Conf.TEMPLATE);
+		System.out.println("Conf.INIT_STRING: " + Conf.INIT_STRING);
 		
 		
 		Thread t = new Thread(new GSwarm());

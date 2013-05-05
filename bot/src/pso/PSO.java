@@ -1,7 +1,6 @@
 package pso;
 
 import java.util.Random;
-import log.PSOLogger;
 
 /**
  * Particle Swarm Optimization algorithm implementation.

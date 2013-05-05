@@ -7,6 +7,8 @@ ROBOCODE_PATH = ""
 
 
 def loadPaths():
+    """Load paths from config file.
+    """
     global TEMPLATE_PATH, ENEMIES_PATH, ROBOCODE_PATH
 
     with open(os.path.dirname(os.path.abspath(__file__)) + "/../conf/path.conf") as f:
@@ -24,6 +26,13 @@ def loadPaths():
 
 
 def createBattleFile(enemy, level, id):
+    """Create battle file for enemy.
+
+    Args:
+        enemy: enemy full name (full package name)
+        level: enemy position in the list
+        id: robot identificator
+    """
     battle_name = "gswarm" + id + "_" + level + ".battle"
     robot_name = "gswarm.GSwarmRobot" + id
     target_path = ROBOCODE_PATH + "/battles/gswarm/" + battle_name
@@ -38,6 +47,7 @@ def createBattleFile(enemy, level, id):
 
 loadPaths()
 
+# read enemies from config
 with open(ENEMIES_PATH) as f:
     enemies = f.readlines()
 

@@ -1,0 +1,3 @@
+<!EXP> = <!EXP> <!OPP> <!EXP> | <!VAR>
+<!OPP> = + | - | * | /
+<!VAR> = a

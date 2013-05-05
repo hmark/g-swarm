@@ -2,6 +2,11 @@ package utils;
 
 import java.io.*;
 
+/**
+ * Metody pouzivane na pracu so subormi.
+ * @author Marek Hlav·Ë <mark.hlavac@gmail.com>
+ *
+ */
 public class FileUtils {
 
 	static public String convertFileToString(String filename){

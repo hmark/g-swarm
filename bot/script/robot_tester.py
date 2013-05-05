@@ -19,21 +19,44 @@ compiled_robots = []
 
 
 class Logger():
+    """File logger.
+    """
 
     def __init__(self, robots_src_path, iter_str):
+        """Prepare log files.
+
+        Args:
+            robots_src_path: direct path to actual test
+            iter_str: iteration path (e.g.: test/iteration)
+        """
         if not os.path.exists(robots_src_path + "/logs"):
             os.mkdir(robots_src_path + "/logs")
 
         self.f = open(robots_src_path + "/logs/" + iter_str + ".log", "w")
 
     def write(self, text):
+        """Write data to log file.
+
+        Args:
+            text: logging text
+        """
         print(ctime() + ": " + str(text))
         self.f.write(ctime() + ": " + str(text) + "\n")
 
 
 class CompilationThread(threading.Thread):
+    """Compilation class.
+    """
 
     def __init__(self, semaphore, particle_position, particle_id, robots_src_path):
+        """Initalize compilation.
+
+        Args:
+            semaphore: semaphore used for thread management
+            particle_position: particle position
+            particle_id: unique particle identificator
+            robots_src_path: path to robot tests
+        """
         threading.Thread.__init__(self)
 
         self.semaphore = semaphore
@@ -42,6 +65,8 @@ class CompilationThread(threading.Thread):
         self.robots_src_path = robots_src_path
 
     def compileRobot(self):
+        """Compile robot program.
+        """
         target_dir_path = self.robots_src_path + "/" + SWARM_NAME + "_particle" + self.particle_id
         target_scr_path = target_dir_path + "/GSwarmRobot" + self.particle_id + ".java"
 
@@ -54,12 +79,24 @@ class CompilationThread(threading.Thread):
             logger.write("Missing source dir for robot #" + self.particle_id)
 
     def run(self):
+        """Run thread.
+        """
         self.compileRobot()
 
 
 class BattleThread(threading.Thread):
+    """Battle execution class.
+    """
 
     def __init__(self, semaphore, particle_id, robots_src_path, enemies):
+        """Initalize compilation.
+
+        Args:
+            semaphore: semaphore used for thread management
+            particle_position: particle position
+            robots_src_path: path to robot tests
+            enemies: list of enemies
+        """
         threading.Thread.__init__(self)
 
         self.MAX_DIFFICULTY = len(enemies)
@@ -75,14 +112,20 @@ class BattleThread(threading.Thread):
         self.updateBattleConfig()
 
     def updateBattleConfig(self):
+        """Set battle config file for test against enemy.
+        """
         self.BATTLE_CONFIG_PATH = ROBOCODE_PATH + "/battles/gswarm/gswarm" + self.particle_id + "_" + str(self.difficulty) + ".battle"
 
     def copyRobot(self):
+        """Copy compiled robot to Robocode environment for test.
+        """
         src_path = self.robots_src_path + "/" + SWARM_NAME + "_particle" + self.particle_id + "/gswarm/GSwarmRobot" + self.particle_id + ".class"
         dest_path = ROBOCODE_PATH + "/robots/gswarm"
         shutil.copy(src_path, dest_path)
 
     def startBattle(self):
+        """Start battle for compiled robot with specified battle configuration file.
+        """
         fh = open("NUL", "w")
         self.RESULT_PATH = self.robots_src_path + "/" + SWARM_NAME + "_particle" + self.particle_id + "/result" + str(self.difficulty) + ".rsl"
         self.BATTLE_LOG_PATH = self.robots_src_path + "/" + SWARM_NAME + "_particle" + self.particle_id + "/battle.log"
@@ -91,6 +134,8 @@ class BattleThread(threading.Thread):
         fh.close()
 
     def getBattleResult(self):
+        """Process battle result and calculate fitness from battle result.
+        """
         with open(self.RESULT_PATH) as f:
             lines = f.readlines()
 
@@ -127,19 +172,27 @@ class BattleThread(threading.Thread):
         return robot_score / (enemy_score + robot_score)
 
     def updateScore(self):
+        """Update score (used primarily for more enemy tests).
+        """
         self.fitness = self.getBattleResult()
         self.total += self.fitness
 
     def isRobotSuccesful(self):
+        """Is robot succesfull against last enemy (used for progressive fitness calcualation).
+        """
         win_limit = int(self.enemies[self.difficulty - 1][2])
         return self.fitness >= win_limit
 
     def outputTotalScore(self):
+        """Output total score to file for processing fitness in Java environment.
+        """
         result_path = self.robots_src_path + "/" + SWARM_NAME + "_particle" + self.particle_id + "/score.log"
         with open(result_path, "w") as f:
             f.write(str(self.total) + "\n")
 
     def run(self):
+        """Run thread.
+        """
         try:
             while True:
                 self.copyRobot()
@@ -171,6 +224,8 @@ if len(sys.argv) != 5:
 
 
 def loadPaths():
+    """Load paths for correct test execution.
+    """
     global JAVAC_PATH, ROBOCODE_PATH, ENEMIES_PATH
 
     with open(os.path.dirname(os.path.abspath(__file__)) + "/../conf/path.conf") as f:
@@ -188,10 +243,14 @@ def loadPaths():
 
 
 def transToParticleId(id):
+    """Translate particle identifactor to robot string.
+    """
     return str(10000 + i)
 
 
 def getEnemies():
+    """Read enemies from file.
+    """
     with open(ENEMIES_PATH) as f:
         enemies = f.readlines()
     return [enemy.strip().split(" ") for enemy in enemies]  # [difficulty, name, win_limit]
