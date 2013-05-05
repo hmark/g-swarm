@@ -5,6 +5,13 @@ Author:	Marek Hlaváč
 
 h2. Changelog
 
+h3. v0.8 (05.05.2013)
+
+bug fixes
+gui update
+comments
+refactoring
+
 h3. v0.7 (28.03.2013)
 
 fixed python robot test script
