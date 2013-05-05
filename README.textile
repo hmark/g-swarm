@@ -55,12 +55,9 @@ grammatical swarm implementation (without external fitness calculation)
 h2. Future development
 
 BACKLOG
-! parallel pso solution !
-! simple charts export !
+simple charts export
 open robocode battle from gui (for specified particle source)
 distributed computing algorithm (master-slave for 2 computers)
 CLI options parser (-p <number of particles> ...)
 configurable list of enemy robots to gui
-tournament measurement
-code refactoring
 PSO library experiments
